@@ -5,53 +5,42 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Employer")
+@Table(name = "employer")
 public class Employer {
 
     @Id
-    @Column(name = "Id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
-    @Column(name = "Email", unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "Name")
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "province")
     private Integer province;
 
     private String province_name;
 
-    @Column(name = "Description")
+    @Column(name = "description")
     private String description;
 
     @Builder.Default
-    @Column(name = "Created at")
+    @Column(name = "created_at")
     private LocalDate createdAt = LocalDate.now();
 
     @Builder.Default
-    @Column(name = "Updated at")
+    @Column(name = "updated_at")
     private LocalDate updatedAt = LocalDate.now();
-
-    public Employer(Long id, String email, String name, Integer province, String description, LocalDate createdAt, LocalDate updatedAt) {
-        this.id = id;
-        this.email = email;
-        this.name = name;
-        this.province = province;
-        this.description = description;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 
 }
 

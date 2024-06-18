@@ -1,6 +1,13 @@
 package com.example.recruitment_service.controller;
 
 
+import com.example.recruitment_service.DtoIn.EmployerDtoIn;
+import com.example.recruitment_service.DtoIn.PageDtoIn;
+import com.example.recruitment_service.DtoIn.UpdatedEmployerDtoIn;
+import com.example.recruitment_service.DtoOut.EmployerDtoOut;
+import com.example.recruitment_service.DtoOut.PageDtoOut;
+import com.example.recruitment_service.common.controller.ResponseController;
+import com.example.recruitment_service.common.response.ApiResponse;
 import com.example.recruitment_service.model.Employer;
 import com.example.recruitment_service.service.EmployerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 @Controller
 @RequestMapping("/employers")
 public class EmployerController {
@@ -21,56 +24,36 @@ public class EmployerController {
     @Autowired
     private EmployerService employerService;
 
-    @PostMapping("/add")
-    public ResponseEntity<?> addEmployer(@RequestBody Employer employer) {
-        try {
-            Employer createdEmployer = employerService.createEmployer(employer).orElseThrow();
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployer);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+    @PostMapping("/")
+    public ResponseEntity<?> addEmployer(@RequestBody EmployerDtoIn employer) {
+        return ResponseController.responseEntity(() -> employerService.createEmployer(employer), HttpStatus.CREATED);
     }
 
     @GetMapping("/")
-    public ResponseEntity<Map<String, Object>> getAllEmployers(
+    public ResponseEntity<?> getAllEmployers(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "5") int pageSize
+            @RequestParam(defaultValue = "10") int pageSize
     ) {
-        Page<Employer> employerPage = employerService.getEmployers(page, pageSize);
+        PageDtoIn employerPage = new PageDtoIn(page, pageSize);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("employers", employerPage.getNumber() + 1);
-        response.put("pageSize", employerPage.getSize());
-        response.put("totalElements", employerPage.getTotalElements());
-        response.put("totalPages", employerPage.getTotalPages());
-        response.put("data", employerPage.getContent());
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseController.responseEntity(() -> employerService.getAllEmployers(employerPage));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEmployer(@PathVariable long id) {
         employerService.deleteEmployer(id);
-        return ResponseEntity.status(HttpStatus.OK).body(new Object());
+        return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getEmployerById(@PathVariable long id) {
-        Employer employer = null;
-        if(employerService.findEmployerById(id).isPresent()) {
-            employer = employerService.findEmployerById(id).get();
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(employer);
+        return ResponseController.responseEntity(() -> employerService.getEmployerById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateEmployer(@PathVariable long id, @RequestBody Employer employer) {
-        Optional<Employer> employerOptional = employerService.updateEmployer(id, employer);
-        if(employerOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employer not found");
-        }
+    public ResponseEntity<?> updateEmployer(@PathVariable long id, @RequestBody UpdatedEmployerDtoIn employer) {
+        employerService.updateEmployer(id, employer);
+        return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 
 }
