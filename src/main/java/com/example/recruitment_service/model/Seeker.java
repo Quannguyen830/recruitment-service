@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Data
@@ -12,35 +14,30 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "employer")
-public class Employer {
+@Table(name = "seeker")
+public class Seeker {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(name = "email", unique = true, nullable = false)
-    private String email;
+    private BigInteger id;
 
     @Column(name = "name")
     private String name;
 
+    @Column(name = "birthday")
+    private String birthday;
+
+    @Column(name = "address")
+    private String address;
+
     @Column(name = "province")
     private Integer province;
 
-    private String province_name;
-
-    @Column(name = "description")
-    private String description;
-
-    @Builder.Default
     @Column(name = "created_at")
-    private LocalDate createdAt = LocalDate.now();
+    private LocalDate created_at;
 
-    @Builder.Default
     @Column(name = "updated_at")
-    private LocalDate updatedAt = LocalDate.now();
+    private LocalDate updated_at;
 
 }
-
