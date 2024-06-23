@@ -5,12 +5,16 @@ import com.example.recruitment_service.DtoIn.PageDtoIn;
 import com.example.recruitment_service.DtoIn.UpdatedEmployerDtoIn;
 import com.example.recruitment_service.DtoOut.EmployerDtoOut;
 import com.example.recruitment_service.DtoOut.PageDtoOut;
+import com.example.recruitment_service.common.errorCode.ErrorCode;
+import com.example.recruitment_service.common.exception.ApiException;
+import com.example.recruitment_service.common.response.ApiResponse;
 import com.example.recruitment_service.model.Employer;
 import com.example.recruitment_service.repository.EmployerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,7 +28,7 @@ public class EmployerServiceImpl implements EmployerService {
     @Override
     public EmployerDtoOut createEmployer(EmployerDtoIn employerDtoIn) {
         if(employerRepository.findByEmail(employerDtoIn.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Email is already in use");
         }
         Employer newEmployer = new Employer();
         newEmployer.setName(employerDtoIn.getName());
@@ -40,7 +44,7 @@ public class EmployerServiceImpl implements EmployerService {
     @Override
     public EmployerDtoOut updateEmployer(long id, UpdatedEmployerDtoIn updatedEmployer) {
         Employer employer = employerRepository.findById(id).orElseThrow(() ->
-            new IllegalArgumentException("Employer not found")
+            new ApiException(ErrorCode.DATA_NOT_FOUND, HttpStatus.BAD_REQUEST, "Employer not found")
         );
         employer.setName(updatedEmployer.getUsername());
         employer.setId(updatedEmployer.getId());
@@ -56,7 +60,7 @@ public class EmployerServiceImpl implements EmployerService {
     @Override
     public EmployerDtoOut getEmployerById(Long id) {
         Employer employer = employerRepository.findById(id).orElseThrow(() ->
-            new IllegalArgumentException("Employer not found")
+            new ApiException(ErrorCode.DATA_NOT_FOUND, HttpStatus.BAD_REQUEST, "Employer not found")
         );
 
         return EmployerDtoOut.from(employer);
