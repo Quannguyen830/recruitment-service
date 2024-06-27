@@ -23,7 +23,7 @@ public class Job {
     private BigInteger id;
 
     @Column(name = "employer_id")
-    private BigInteger employerId;
+    private Long employerId;
 
     @Column(name = "title")
     private String title;

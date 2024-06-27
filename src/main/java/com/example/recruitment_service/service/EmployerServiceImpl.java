@@ -7,7 +7,6 @@ import com.example.recruitment_service.DtoOut.EmployerDtoOut;
 import com.example.recruitment_service.DtoOut.PageDtoOut;
 import com.example.recruitment_service.common.errorCode.ErrorCode;
 import com.example.recruitment_service.common.exception.ApiException;
-import com.example.recruitment_service.common.response.ApiResponse;
 import com.example.recruitment_service.model.Employer;
 import com.example.recruitment_service.repository.EmployerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
