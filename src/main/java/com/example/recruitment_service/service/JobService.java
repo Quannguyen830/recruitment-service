@@ -1,12 +1,11 @@
 package com.example.recruitment_service.service;
 
-import com.example.recruitment_service.DtoIn.JobDtoIn;
-import com.example.recruitment_service.DtoIn.PageDtoIn;
-import com.example.recruitment_service.DtoIn.UpdatedJobDtoIn;
-import com.example.recruitment_service.DtoOut.JobDtoOut;
-import com.example.recruitment_service.DtoOut.PageDtoOut;
+import com.example.recruitment_service.dto.DtoIn.JobDtoIn;
+import com.example.recruitment_service.dto.DtoIn.PageDtoIn;
+import com.example.recruitment_service.dto.DtoIn.UpdatedJobDtoIn;
+import com.example.recruitment_service.dto.DtoOut.JobDtoOut;
+import com.example.recruitment_service.dto.DtoOut.PageDtoOut;
 import com.example.recruitment_service.model.Job;
-import com.example.recruitment_service.repository.JobRepository;
 
 import java.math.BigInteger;
 

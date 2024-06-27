@@ -1,4 +1,4 @@
-package com.example.recruitment_service.DtoOut;
+package com.example.recruitment_service.dto.DtoOut;
 
 import com.example.recruitment_service.model.Job;
 import lombok.AllArgsConstructor;

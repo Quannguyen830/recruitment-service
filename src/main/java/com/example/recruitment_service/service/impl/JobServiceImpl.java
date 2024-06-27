@@ -1,10 +1,10 @@
-package com.example.recruitment_service.service;
+package com.example.recruitment_service.service.impl;
 
-import com.example.recruitment_service.DtoIn.JobDtoIn;
-import com.example.recruitment_service.DtoIn.PageDtoIn;
-import com.example.recruitment_service.DtoIn.UpdatedJobDtoIn;
-import com.example.recruitment_service.DtoOut.JobDtoOut;
-import com.example.recruitment_service.DtoOut.PageDtoOut;
+import com.example.recruitment_service.dto.DtoIn.JobDtoIn;
+import com.example.recruitment_service.dto.DtoIn.PageDtoIn;
+import com.example.recruitment_service.dto.DtoIn.UpdatedJobDtoIn;
+import com.example.recruitment_service.dto.DtoOut.JobDtoOut;
+import com.example.recruitment_service.dto.DtoOut.PageDtoOut;
 import com.example.recruitment_service.common.errorCode.ErrorCode;
 import com.example.recruitment_service.common.exception.ApiException;
 import com.example.recruitment_service.model.Employer;
@@ -15,8 +15,8 @@ import com.example.recruitment_service.repository.EmployerRepository;
 import com.example.recruitment_service.repository.JobFieldRepository;
 import com.example.recruitment_service.repository.JobProvinceRepository;
 import com.example.recruitment_service.repository.JobRepository;
+import com.example.recruitment_service.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

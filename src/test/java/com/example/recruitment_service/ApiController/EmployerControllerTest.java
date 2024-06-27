@@ -1,9 +1,9 @@
 package com.example.recruitment_service.ApiController;
 
-import com.example.recruitment_service.DtoIn.EmployerDtoIn;
-import com.example.recruitment_service.DtoIn.PageDtoIn;
-import com.example.recruitment_service.DtoIn.UpdatedEmployerDtoIn;
-import com.example.recruitment_service.DtoOut.PageDtoOut;
+import com.example.recruitment_service.dto.DtoIn.EmployerDtoIn;
+import com.example.recruitment_service.dto.DtoIn.PageDtoIn;
+import com.example.recruitment_service.dto.DtoIn.UpdatedEmployerDtoIn;
+import com.example.recruitment_service.dto.DtoOut.PageDtoOut;
 import com.example.recruitment_service.controller.EmployerController;
 import com.example.recruitment_service.model.Employer;
 import com.example.recruitment_service.service.EmployerService;
@@ -14,7 +14,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;

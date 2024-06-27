@@ -1,10 +1,10 @@
 package com.example.recruitment_service.service;
 
-import com.example.recruitment_service.DtoIn.EmployerDtoIn;
-import com.example.recruitment_service.DtoIn.PageDtoIn;
-import com.example.recruitment_service.DtoIn.UpdatedEmployerDtoIn;
-import com.example.recruitment_service.DtoOut.EmployerDtoOut;
-import com.example.recruitment_service.DtoOut.PageDtoOut;
+import com.example.recruitment_service.dto.DtoIn.EmployerDtoIn;
+import com.example.recruitment_service.dto.DtoIn.PageDtoIn;
+import com.example.recruitment_service.dto.DtoIn.UpdatedEmployerDtoIn;
+import com.example.recruitment_service.dto.DtoOut.EmployerDtoOut;
+import com.example.recruitment_service.dto.DtoOut.PageDtoOut;
 import com.example.recruitment_service.model.Employer;
 
 public interface EmployerService {
