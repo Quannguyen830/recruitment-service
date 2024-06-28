@@ -10,6 +10,7 @@ import com.example.recruitment_service.common.exception.ApiException;
 import com.example.recruitment_service.model.Employer;
 import com.example.recruitment_service.repository.EmployerRepository;
 import com.example.recruitment_service.service.EmployerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,10 +21,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 
 @Service
+@RequiredArgsConstructor
 public class EmployerServiceImpl implements EmployerService {
 
-    @Autowired
-    private EmployerRepository employerRepository;
+    private final EmployerRepository employerRepository;
 
     @Override
     public EmployerDtoOut createEmployer(EmployerDtoIn employerDtoIn) {

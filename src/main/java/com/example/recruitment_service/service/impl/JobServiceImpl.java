@@ -16,6 +16,7 @@ import com.example.recruitment_service.repository.JobFieldRepository;
 import com.example.recruitment_service.repository.JobProvinceRepository;
 import com.example.recruitment_service.repository.JobRepository;
 import com.example.recruitment_service.service.JobService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,16 +30,13 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class JobServiceImpl implements JobService {
 
-    @Autowired
-    private JobRepository jobRepository;
-    @Autowired
-    private EmployerRepository employerRepository;
-    @Autowired
-    private JobProvinceRepository provinceRepository;
-    @Autowired
-    private JobFieldRepository fieldRepository;
+    private final JobRepository jobRepository;
+    private final EmployerRepository employerRepository;
+    private final JobProvinceRepository provinceRepository;
+    private final JobFieldRepository fieldRepository;
 
     @Override
     public JobDtoOut createJob(JobDtoIn jobDtoIn) {
@@ -96,17 +94,20 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void deleteJobById(BigInteger id) {
-        jobRepository.deleteById(id);
+        if(jobRepository.findById(id).isPresent()) {
+            jobRepository.deleteById(id);
+        } else {
+            throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Job not found");
+        }
     }
 
     private HashMap<Integer, String> getProvinces(String jobProvince) {
-        int counter = 0;
         HashMap<Integer, String> provinces = new HashMap<>();
         String[] provinceIds = jobProvince.split("-");
-        for(String provinceId : provinceIds) {
-            Optional<JobProvince> provinceFound = provinceRepository.findById(new BigInteger(provinceId));
+        for(int i=1; i<provinceIds.length; i++) {
+            Optional<JobProvince> provinceFound = provinceRepository.findById(new BigInteger(provinceIds[i]));
             if(provinceFound.isPresent()) {
-                provinces.put(counter++, provinceFound.get().getName());
+                provinces.put(i-1, provinceFound.get().getName());
             } else {
                 throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Province not found");
             }
@@ -115,13 +116,12 @@ public class JobServiceImpl implements JobService {
     }
 
     private HashMap<Integer, String> getFields(String jobField) {
-        int counter = 0;
         HashMap<Integer, String> fields = new HashMap<>();
         String[] fieldIds = jobField.split("-");
-        for(String fieldId : fieldIds) {
-            Optional<JobField> fieldFound = fieldRepository.findById(new BigInteger(fieldId));
+        for(int i=1; i<fieldIds.length; i++) {
+            Optional<JobField> fieldFound = fieldRepository.findById(new BigInteger(fieldIds[i]));
             if(fieldFound.isPresent()) {
-                fields.put(counter++, fieldFound.get().getName());
+                fields.put(i-1, fieldFound.get().getName());
             } else {
                 throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Field not found");
             }

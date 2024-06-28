@@ -1,10 +1,16 @@
 package com.example.recruitment_service.controller;
 
+import com.example.recruitment_service.common.controller.CallbackFunction;
 import com.example.recruitment_service.dto.DtoIn.EmployerDtoIn;
 import com.example.recruitment_service.dto.DtoIn.PageDtoIn;
 import com.example.recruitment_service.dto.DtoIn.UpdatedEmployerDtoIn;
 import com.example.recruitment_service.common.controller.ResponseController;
+import com.example.recruitment_service.dto.DtoOut.PageDtoOut;
+import com.example.recruitment_service.model.Employer;
 import com.example.recruitment_service.service.EmployerService;
+import com.example.recruitment_service.service.impl.EmployerServiceImpl;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,24 +18,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/employers")
+@RequiredArgsConstructor
 public class EmployerController {
 
-    @Autowired
-    private EmployerService employerService;
+    private final EmployerServiceImpl employerService;
 
-    @PostMapping("/")
-    public ResponseEntity<?> addEmployer(@RequestBody EmployerDtoIn employer) {
+    @PostMapping("")
+    public ResponseEntity<?> addEmployer(@Valid @RequestBody EmployerDtoIn employer) {
         return ResponseController.responseEntity(() -> employerService.createEmployer(employer), HttpStatus.CREATED);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<?> getAllEmployers(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int pageSize
-    ) {
-        PageDtoIn employerPage = new PageDtoIn(page, pageSize);
-
-        return ResponseController.responseEntity(() -> employerService.getAllEmployers(employerPage));
+    @GetMapping("")
+    public ResponseEntity<?> getAllEmployers(@Valid PageDtoIn pageDtoIn) {
+        return ResponseController.responseEntity(() -> employerService.getAllEmployers(pageDtoIn));
     }
 
     @DeleteMapping("/{id}")
@@ -44,7 +45,7 @@ public class EmployerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateEmployer(@PathVariable long id, @RequestBody UpdatedEmployerDtoIn employer) {
+    public ResponseEntity<?> updateEmployer(@PathVariable long id, @Valid @RequestBody UpdatedEmployerDtoIn employer) {
         employerService.updateEmployer(id, employer);
         return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }

@@ -2,6 +2,7 @@ package com.example.recruitment_service.dto.DtoIn;
 
 import com.example.recruitment_service.model.Job;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,11 +15,11 @@ import java.time.LocalDate;
 @Builder
 public class JobDtoIn {
 
-    @NotEmpty
+    @NotNull
     private Long employerId;
     @NotEmpty
     private String title;
-    @NotEmpty
+    @NotNull
     private Integer quantity;
     @NotEmpty
     private String description;
@@ -26,9 +27,9 @@ public class JobDtoIn {
     private String fieldIds;
     @NotEmpty
     private String provinceIds;
-    @NotEmpty
+    @NotNull
     private Integer salary;
-    @NotEmpty
+    @NotNull
     private LocalDate expiredAt;
 
     public Job from() {
