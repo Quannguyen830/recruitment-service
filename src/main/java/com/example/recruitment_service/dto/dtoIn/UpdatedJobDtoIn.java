@@ -1,25 +1,26 @@
-package com.example.recruitment_service.dto.DtoIn;
+package com.example.recruitment_service.dto.dtoIn;
 
 import com.example.recruitment_service.model.Job;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class JobDtoIn {
+public class UpdatedJobDtoIn {
 
-    @NotNull
-    private Long employerId;
+    @NotEmpty
+    private BigInteger id;
     @NotEmpty
     private String title;
-    @NotNull
+    @NotEmpty
     private Integer quantity;
     @NotEmpty
     private String description;
@@ -27,13 +28,13 @@ public class JobDtoIn {
     private String fieldIds;
     @NotEmpty
     private String provinceIds;
-    @NotNull
+    @NotEmpty
     private Integer salary;
-    @NotNull
+    @NotEmpty
     private LocalDate expiredAt;
 
     public Job from() {
-        return Job.builder().employerId(this.employerId).title(this.title).quantity(this.quantity)
+        return Job.builder().id(this.id).title(this.title).quantity(this.quantity)
                 .description(this.description).fields(fieldIds).provinces(provinceIds)
                 .salary(salary).expired_at(expiredAt).build();
     }

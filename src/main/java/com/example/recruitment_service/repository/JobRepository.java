@@ -11,5 +11,6 @@ import java.math.BigInteger;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, BigInteger> {
-
+    @Query("SELECT j FROM Job j JOIN Employer e ON j.employerId = e.id ORDER BY j.expired_at DESC, e.name ASC")
+    Page<Job> findAllJobsSorted(Pageable pageable);
 }

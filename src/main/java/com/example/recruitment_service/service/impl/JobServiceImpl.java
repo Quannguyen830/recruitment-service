@@ -1,10 +1,10 @@
 package com.example.recruitment_service.service.impl;
 
-import com.example.recruitment_service.dto.DtoIn.JobDtoIn;
-import com.example.recruitment_service.dto.DtoIn.PageDtoIn;
-import com.example.recruitment_service.dto.DtoIn.UpdatedJobDtoIn;
-import com.example.recruitment_service.dto.DtoOut.JobDtoOut;
-import com.example.recruitment_service.dto.DtoOut.PageDtoOut;
+import com.example.recruitment_service.dto.dtoIn.JobDtoIn;
+import com.example.recruitment_service.dto.dtoIn.PageDtoIn;
+import com.example.recruitment_service.dto.dtoIn.UpdatedJobDtoIn;
+import com.example.recruitment_service.dto.dtoOut.JobDtoOut;
+import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
 import com.example.recruitment_service.common.errorCode.ErrorCode;
 import com.example.recruitment_service.common.exception.ApiException;
 import com.example.recruitment_service.model.Employer;
@@ -17,7 +17,6 @@ import com.example.recruitment_service.repository.JobProvinceRepository;
 import com.example.recruitment_service.repository.JobRepository;
 import com.example.recruitment_service.service.JobService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -88,7 +87,7 @@ public class JobServiceImpl implements JobService {
     @Override
     public PageDtoOut<Job> findAllJobs(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize());
-        Page<Job> page = jobRepository.findAll(pageable);
+        Page<Job> page = jobRepository.findAllJobsSorted(pageable);
         return PageDtoOut.from(page.getTotalPages(), page.getSize(), page.getTotalElements(), page.getContent());
     }
 

@@ -1,13 +1,9 @@
 package com.example.recruitment_service.controller;
 
 import com.example.recruitment_service.common.controller.ResponseController;
-import com.example.recruitment_service.common.response.ApiResponse;
-import com.example.recruitment_service.dto.DtoIn.JobDtoIn;
-import com.example.recruitment_service.dto.DtoIn.PageDtoIn;
-import com.example.recruitment_service.dto.DtoIn.UpdatedJobDtoIn;
-import com.example.recruitment_service.dto.DtoOut.JobDtoOut;
-import com.example.recruitment_service.model.Job;
-import com.example.recruitment_service.service.JobService;
+import com.example.recruitment_service.dto.dtoIn.JobDtoIn;
+import com.example.recruitment_service.dto.dtoIn.PageDtoIn;
+import com.example.recruitment_service.dto.dtoIn.UpdatedJobDtoIn;
 import com.example.recruitment_service.service.impl.JobServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

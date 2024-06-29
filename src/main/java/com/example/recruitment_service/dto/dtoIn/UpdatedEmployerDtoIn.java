@@ -1,8 +1,6 @@
-package com.example.recruitment_service.dto.DtoIn;
+package com.example.recruitment_service.dto.dtoIn;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,20 +8,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class EmployerDtoIn {
+@AllArgsConstructor
+@NoArgsConstructor
+public class UpdatedEmployerDtoIn {
 
     @NotEmpty
-    @Email
-    private String email;
+    private Long id;
 
     @NotEmpty
-    @Size(max = 255)
-    private String name;
+    @Size(max = 500)
+    private String username;
 
-    @NotNull
+    @NotEmpty
     private int provinceId;
     private String description;
 
