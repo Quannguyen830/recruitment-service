@@ -1,11 +1,14 @@
 package com.example.recruitment_service.dto.dtoIn;
 
+import com.example.recruitment_service.model.Employer;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -17,7 +20,6 @@ public class UpdatedEmployerDtoIn {
     private Long id;
 
     @NotEmpty
-    @Size(max = 500)
     private String username;
 
     @NotEmpty

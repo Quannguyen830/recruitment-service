@@ -25,9 +25,12 @@ public class JobController {
         return ResponseController.responseEntity(() -> jobService.createJob(jobDtoIn), HttpStatus.CREATED);
     }
 
-    @PutMapping("")
-    public ResponseEntity<?> updateJob(@Valid @RequestBody UpdatedJobDtoIn jobDtoIn) {
-        jobService.updateJob(jobDtoIn);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateJob(
+            @Valid @RequestBody UpdatedJobDtoIn jobDtoIn,
+            @PathVariable BigInteger id
+    ) {
+        jobService.updateJob(id, jobDtoIn);
         return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 

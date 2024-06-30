@@ -30,7 +30,7 @@ public class PageDtoOut<T> {
     private List<T> data = new ArrayList<>();
 
     public static <T> PageDtoOut<T> from(int page, int pageSize, long totalElements, List<T> data) {
-        Long totalPages = totalElements/pageSize;
+        long totalPages = totalElements/pageSize;
         if(totalElements % pageSize != 0) {
             totalPages++;
         }

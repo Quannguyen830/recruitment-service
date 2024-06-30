@@ -11,7 +11,7 @@ import java.math.BigInteger;
 
 public interface JobService {
     JobDtoOut createJob(JobDtoIn jobDtoIn);
-    void updateJob(UpdatedJobDtoIn updatedJobDtoIn);
+    void updateJob(BigInteger id, UpdatedJobDtoIn updatedJobDtoIn);
     JobDtoOut findJobById(BigInteger id);
     PageDtoOut<Job> findAllJobs(PageDtoIn pageDtoIn);
     void deleteJobById(BigInteger id);

@@ -30,19 +30,12 @@ public class EmployerServiceImpl implements EmployerService {
         if(employerRepository.findByEmail(employerDtoIn.getEmail()).isPresent()) {
             throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Email is already in use");
         }
-        Employer newEmployer = new Employer();
-        newEmployer.setName(employerDtoIn.getName());
-        newEmployer.setEmail(employerDtoIn.getEmail());
-        newEmployer.setDescription(employerDtoIn.getDescription());
-        newEmployer.setCreatedAt(LocalDate.now());
-        newEmployer.setUpdatedAt(LocalDate.now());
-        employerRepository.save(newEmployer);
-
+        Employer newEmployer = EmployerDtoIn.from(employerDtoIn);
         return EmployerDtoOut.from(newEmployer);
     }
 
     @Override
-    public EmployerDtoOut updateEmployer(long id, UpdatedEmployerDtoIn updatedEmployer) {
+    public void updateEmployer(long id, UpdatedEmployerDtoIn updatedEmployer) {
         Employer employer = employerRepository.findById(id).orElseThrow(() ->
             new ApiException(ErrorCode.DATA_NOT_FOUND, HttpStatus.BAD_REQUEST, "Employer not found")
         );
@@ -51,10 +44,7 @@ public class EmployerServiceImpl implements EmployerService {
         employer.setDescription(updatedEmployer.getDescription());
         employer.setProvince(updatedEmployer.getProvinceId());
         employer.setUpdatedAt(LocalDate.now());
-
         employerRepository.save(employer);
-
-        return EmployerDtoOut.from(employer);
     }
 
     @Override
@@ -75,12 +65,13 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
-    public EmployerDtoOut deleteEmployer(Long id) {
+    public void deleteEmployer(Long id) {
         if(!employerRepository.existsById(id)) {
-            return EmployerDtoOut.builder().build();
+            EmployerDtoOut.builder().build();
+            return;
         }
         employerRepository.deleteById(id);
-        return EmployerDtoOut.builder().build();
+        EmployerDtoOut.builder().build();
     }
 
 }

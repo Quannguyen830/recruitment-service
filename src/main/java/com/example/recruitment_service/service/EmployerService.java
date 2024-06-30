@@ -9,8 +9,8 @@ import com.example.recruitment_service.model.Employer;
 
 public interface EmployerService {
     EmployerDtoOut createEmployer(EmployerDtoIn employerDtoIn);
-    EmployerDtoOut updateEmployer(long id, UpdatedEmployerDtoIn employer);
+    void updateEmployer(long id, UpdatedEmployerDtoIn employer);
     EmployerDtoOut getEmployerById(Long id);
     PageDtoOut<Employer> getAllEmployers(PageDtoIn pageDtoIn);
-    EmployerDtoOut deleteEmployer(Long id);
+    void deleteEmployer(Long id);
 }

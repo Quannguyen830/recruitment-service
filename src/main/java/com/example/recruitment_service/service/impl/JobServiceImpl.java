@@ -39,9 +39,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobDtoOut createJob(JobDtoIn jobDtoIn) {
-        Job job = jobDtoIn.from();
-        job.setCreated_at(LocalDate.now());
-        job.setUpdated_at(LocalDate.now());
+        Job job = JobDtoIn.from(jobDtoIn);
         Optional<Employer> employer = employerRepository.findById(jobDtoIn.getEmployerId());
 
         if(employer.isEmpty()) {
@@ -55,8 +53,19 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public void updateJob(UpdatedJobDtoIn updatedJobDtoIn) {
-        Job job = updatedJobDtoIn.from();
+    public void updateJob(BigInteger id, UpdatedJobDtoIn updatedJobDtoIn) {
+        Job job = jobRepository.findById(id).orElseThrow(
+                () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Job not found")
+        );
+
+        job.setId(updatedJobDtoIn.getId());
+        job.setTitle(updatedJobDtoIn.getTitle());
+        job.setQuantity(updatedJobDtoIn.getQuantity());
+        job.setDescription((updatedJobDtoIn.getDescription()));
+        job.setFields(updatedJobDtoIn.getFieldIds());
+        job.setProvinces(updatedJobDtoIn.getProvinceIds());
+        job.setSalary(updatedJobDtoIn.getSalary());
+        job.setExpired_at((updatedJobDtoIn.getExpiredAt()));
         job.setUpdated_at(LocalDate.now());
         jobRepository.save(job);
     }

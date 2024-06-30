@@ -1,5 +1,6 @@
 package com.example.recruitment_service.dto.dtoIn;
 
+import com.example.recruitment_service.model.Employer;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -26,5 +30,11 @@ public class EmployerDtoIn {
     @NotNull
     private int provinceId;
     private String description;
+
+    public static Employer from(EmployerDtoIn employerDtoIn) {
+        return Employer.builder().email(employerDtoIn.email).name(employerDtoIn.name)
+                .province(employerDtoIn.provinceId).description(employerDtoIn.description)
+                .createdAt(LocalDate.now()).updatedAt(LocalDate.now()).build();
+    }
 
 }
