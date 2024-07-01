@@ -3,6 +3,7 @@ package com.example.recruitment_service.ApiController;
 import com.example.recruitment_service.dto.dtoIn.EmployerDtoIn;
 import com.example.recruitment_service.dto.dtoIn.PageDtoIn;
 import com.example.recruitment_service.dto.dtoIn.UpdatedEmployerDtoIn;
+import com.example.recruitment_service.dto.dtoOut.EmployerDtoOut;
 import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
 import com.example.recruitment_service.controller.EmployerController;
 import com.example.recruitment_service.model.Employer;
@@ -59,7 +60,7 @@ public class EmployerControllerTest {
 
     @Test
     public void testGetAllEmployers() throws Exception {
-        PageDtoOut<Employer> pageDtoOut = new PageDtoOut<>();
+        PageDtoOut<EmployerDtoOut> pageDtoOut = new PageDtoOut<>();
         Mockito.when(employerService.getAllEmployers(any(PageDtoIn.class))).thenReturn(pageDtoOut);
 
         mockMvc.perform(get("/employers/")

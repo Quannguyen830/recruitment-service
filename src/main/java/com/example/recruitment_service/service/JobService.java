@@ -13,6 +13,6 @@ public interface JobService {
     JobDtoOut createJob(JobDtoIn jobDtoIn);
     void updateJob(BigInteger id, UpdatedJobDtoIn updatedJobDtoIn);
     JobDtoOut findJobById(BigInteger id);
-    PageDtoOut<Job> findAllJobs(PageDtoIn pageDtoIn);
+    PageDtoOut<JobDtoOut> findAllJobs(PageDtoIn pageDtoIn);
     void deleteJobById(BigInteger id);
 }

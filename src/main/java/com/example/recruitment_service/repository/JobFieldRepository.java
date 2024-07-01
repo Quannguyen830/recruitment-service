@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.math.BigInteger;
 
 @Repository
-public interface JobFieldRepository extends JpaRepository<JobField, BigInteger> {
+public interface JobFieldRepository extends JpaRepository<JobField, Integer> {
 
 }

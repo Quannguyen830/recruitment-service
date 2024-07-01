@@ -40,16 +40,8 @@ public class JobServiceImpl implements JobService {
     @Override
     public JobDtoOut createJob(JobDtoIn jobDtoIn) {
         Job job = JobDtoIn.from(jobDtoIn);
-        Optional<Employer> employer = employerRepository.findById(jobDtoIn.getEmployerId());
-
-        if(employer.isEmpty()) {
-            throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Employer not found");
-        }
-
-        HashMap<Integer, String> provinces = getProvinces(job.getProvinces());
-        HashMap<Integer, String> fields = getFields(job.getFields());
         jobRepository.save(job);
-        return JobDtoOut.from(job, fields, provinces, employer.get().getName());
+        return getJobDtoOut(job);
     }
 
     @Override
@@ -72,32 +64,18 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobDtoOut findJobById(BigInteger id) {
-        Optional<Job> jobFound = jobRepository.findById(id);
-
-        if(jobFound.isEmpty()) {
-            throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Job not found");
-        }
-
-        Job job = jobFound.get();
-        Optional<Employer> employerFound = employerRepository.findById(job.getEmployerId());
-
-        if(employerFound.isEmpty()) {
-            throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Employer not found");
-        }
-
-        Employer employer = employerFound.get();
-
-        HashMap<Integer, String> fields = getFields(job.getFields());
-        HashMap<Integer, String> provinces = getProvinces(job.getProvinces());
-
-        return JobDtoOut.from(job, fields, provinces, employer.getName());
+        Job job = jobRepository.findById(id).orElseThrow(
+                () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Job not found")
+        );
+        return getJobDtoOut(job);
     }
 
     @Override
-    public PageDtoOut<Job> findAllJobs(PageDtoIn pageDtoIn) {
+    public PageDtoOut<JobDtoOut> findAllJobs(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize());
         Page<Job> page = jobRepository.findAllJobsSorted(pageable);
-        return PageDtoOut.from(page.getTotalPages(), page.getSize(), page.getTotalElements(), page.getContent());
+        return PageDtoOut.from(page.getTotalPages(), page.getSize(), page.getTotalElements()
+                , page.stream().map(this::getJobDtoOut).toList());
     }
 
     @Override
@@ -112,13 +90,11 @@ public class JobServiceImpl implements JobService {
     private HashMap<Integer, String> getProvinces(String jobProvince) {
         HashMap<Integer, String> provinces = new HashMap<>();
         String[] provinceIds = jobProvince.split("-");
-        for(int i=1; i<provinceIds.length; i++) {
-            Optional<JobProvince> provinceFound = provinceRepository.findById(new BigInteger(provinceIds[i]));
-            if(provinceFound.isPresent()) {
-                provinces.put(i-1, provinceFound.get().getName());
-            } else {
-                throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Province not found");
-            }
+        for(String provinceId: provinceIds) {
+            Integer provinceIdValue = Integer.valueOf(provinceId);
+            provinces.put(provinceIdValue, fieldRepository.findById(provinceIdValue).orElseThrow(
+                    () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Province not found")
+            ).getName());
         }
         return provinces;
     }
@@ -126,14 +102,21 @@ public class JobServiceImpl implements JobService {
     private HashMap<Integer, String> getFields(String jobField) {
         HashMap<Integer, String> fields = new HashMap<>();
         String[] fieldIds = jobField.split("-");
-        for(int i=1; i<fieldIds.length; i++) {
-            Optional<JobField> fieldFound = fieldRepository.findById(new BigInteger(fieldIds[i]));
-            if(fieldFound.isPresent()) {
-                fields.put(i-1, fieldFound.get().getName());
-            } else {
-                throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Field not found");
-            }
+        for(String fieldId: fieldIds) {
+            Integer fieldIdValue = Integer.valueOf(fieldId);
+            fields.put(fieldIdValue, fieldRepository.findById(fieldIdValue).orElseThrow(
+                    () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Field not found")
+            ).getName());
         }
         return fields;
+    }
+
+    private JobDtoOut getJobDtoOut(Job job) {
+        Employer employer = employerRepository.findById(job.getEmployerId()).orElseThrow(
+                () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Employer not found")
+        );
+        HashMap<Integer, String> fields = getFields(job.getFields());
+        HashMap<Integer, String> provinces = getProvinces(job.getProvinces());
+        return JobDtoOut.from(job, fields, provinces, employer.getName());
     }
 }

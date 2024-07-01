@@ -13,5 +13,5 @@ import java.math.BigInteger;
 @Repository
 public interface SeekerRepository extends JpaRepository<Seeker, BigInteger> {
     @Query("SELECT s FROM Seeker s ORDER BY s.name ASC")
-    Page<Seeker> findAllByOrderByNameAsc(PageDtoIn pageDtoIn);
+    Page<Seeker> findAllByOrderByNameAsc(Pageable pageable);
 }

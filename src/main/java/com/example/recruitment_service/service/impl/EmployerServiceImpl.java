@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -57,11 +58,12 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
-    public PageDtoOut<Employer> getAllEmployers(PageDtoIn pageDtoIn) {
-        Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize());
+    public PageDtoOut<EmployerDtoOut> getAllEmployers(PageDtoIn pageDtoIn) {
+        Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize()
+                , Sort.by("id").ascending());
         Page<Employer> page = employerRepository.findAll(pageable);
         return PageDtoOut.from(page.getTotalPages(), page.getSize(), page.getTotalElements()
-        , page.getContent());
+        , page.stream().map(EmployerDtoOut::from).toList());
     }
 
     @Override

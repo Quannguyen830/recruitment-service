@@ -11,6 +11,6 @@ public interface EmployerService {
     EmployerDtoOut createEmployer(EmployerDtoIn employerDtoIn);
     void updateEmployer(long id, UpdatedEmployerDtoIn employer);
     EmployerDtoOut getEmployerById(Long id);
-    PageDtoOut<Employer> getAllEmployers(PageDtoIn pageDtoIn);
+    PageDtoOut<EmployerDtoOut> getAllEmployers(PageDtoIn pageDtoIn);
     void deleteEmployer(Long id);
 }
