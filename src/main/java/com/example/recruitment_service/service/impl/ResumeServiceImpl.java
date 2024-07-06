@@ -2,13 +2,11 @@ package com.example.recruitment_service.service.impl;
 
 import com.example.recruitment_service.common.errorCode.ErrorCode;
 import com.example.recruitment_service.common.exception.ApiException;
-import com.example.recruitment_service.dto.dtoIn.PageDtoIn;
-import com.example.recruitment_service.dto.dtoIn.ResumeDtoIn;
-import com.example.recruitment_service.dto.dtoIn.UpdatedResumeDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.ResumeDtoIn;
+import com.example.recruitment_service.dto.dtoIn.updateEntity.UpdatedResumeDtoIn;
 import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
 import com.example.recruitment_service.dto.dtoOut.ResumeDtoOut;
-import com.example.recruitment_service.model.JobField;
-import com.example.recruitment_service.model.JobProvince;
 import com.example.recruitment_service.model.Resume;
 import com.example.recruitment_service.model.Seeker;
 import com.example.recruitment_service.repository.JobFieldRepository;
@@ -17,17 +15,18 @@ import com.example.recruitment_service.repository.ResumeRepository;
 import com.example.recruitment_service.repository.SeekerRepository;
 import com.example.recruitment_service.service.ResumeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +45,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
+    @CachePut(value = "resumes", key = "#id")
     public void updateResume(BigInteger id, UpdatedResumeDtoIn updatedResumeDtoIn) {
         Resume resume = resumeRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Resume not found")
@@ -60,6 +60,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
+    @Cacheable(value = "resumes", key = "#id")
     public ResumeDtoOut findResumeById(BigInteger id) {
         Resume resume = resumeRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Resume not found")
@@ -68,6 +69,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
+    @Cacheable(value = "resumes")
     public PageDtoOut<ResumeDtoOut> findAllResume(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize());
         Page<Resume> page = resumeRepository.findAllResumeSorted(pageable);
@@ -76,6 +78,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
+    @CacheEvict(value = "resumes", key = "#id")
     public void deleteResume(BigInteger id) {
         Resume resume = resumeRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Resume not found")
@@ -86,8 +89,8 @@ public class ResumeServiceImpl implements ResumeService {
     private HashMap<Integer, String> getFields(String list) {
         HashMap<Integer, String> fields = new HashMap<>();
         String[] fieldIds = list.split("-");
-        for(String fieldId: fieldIds) {
-            Integer fieldIdValue = Integer.valueOf(fieldId);
+        for(int i=1; i<fieldIds.length; i++) {
+            Integer fieldIdValue = Integer.valueOf(fieldIds[i]);
             fields.put(fieldIdValue, jobFieldRepository.findById(fieldIdValue).orElseThrow(
                     () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Field not found")
             ).getName());
@@ -98,8 +101,8 @@ public class ResumeServiceImpl implements ResumeService {
     private HashMap<Integer, String> getProvinces(String list) {
         HashMap<Integer, String> provinces = new HashMap<>();
         String[] provinceIds = list.split("-");
-        for(String provinceId: provinceIds) {
-            Integer provinceIdValue = Integer.valueOf(provinceId);
+        for(int i=1; i<provinceIds.length; i++) {
+            Integer provinceIdValue = Integer.valueOf(provinceIds[i]);
             provinces.put(provinceIdValue, jobProvinceRepository.findById(provinceIdValue).orElseThrow(
                     () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Province not found")
             ).getName());

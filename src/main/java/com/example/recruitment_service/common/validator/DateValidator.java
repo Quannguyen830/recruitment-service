@@ -1,6 +1,6 @@
 package com.example.recruitment_service.common.validator;
 
-import com.example.recruitment_service.common.annotation.ValidBirthday;
+import com.example.recruitment_service.common.annotation.ValidDate;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
@@ -8,11 +8,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class BirthdayValidator implements ConstraintValidator<ValidBirthday, String> {
+public class DateValidator implements ConstraintValidator<ValidDate, String> {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
-    public void initialize(ValidBirthday constraintAnnotation) {
+    public void initialize(ValidDate constraintAnnotation) {
 
     }
 

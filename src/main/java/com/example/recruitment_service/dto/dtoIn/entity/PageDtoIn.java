@@ -1,4 +1,4 @@
-package com.example.recruitment_service.dto.dtoIn;
+package com.example.recruitment_service.dto.dtoIn.entity;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -14,6 +14,6 @@ public class PageDtoIn {
 
     @NotNull
     @Max(value = 500)
-    private int pageSize = 5;
+    private int pageSize = 10;
 
 }

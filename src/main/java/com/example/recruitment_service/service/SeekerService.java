@@ -1,12 +1,10 @@
 package com.example.recruitment_service.service;
 
-import com.example.recruitment_service.dto.dtoIn.PageDtoIn;
-import com.example.recruitment_service.dto.dtoIn.SeekerDtoIn;
-import com.example.recruitment_service.dto.dtoIn.UpdatedSeekerDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.SeekerDtoIn;
+import com.example.recruitment_service.dto.dtoIn.updateEntity.UpdatedSeekerDtoIn;
 import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
 import com.example.recruitment_service.dto.dtoOut.SeekerDtoOut;
-import com.example.recruitment_service.model.Seeker;
-import org.springframework.data.domain.Pageable;
 
 import java.math.BigInteger;
 

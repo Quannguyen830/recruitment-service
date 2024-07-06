@@ -1,6 +1,6 @@
-package com.example.recruitment_service.dto.dtoIn;
+package com.example.recruitment_service.dto.dtoIn.updateEntity;
 
-import com.example.recruitment_service.model.Resume;
+import com.example.recruitment_service.common.annotation.ValidDate;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,24 +8,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
-import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdatedResumeDtoIn {
+public class UpdatedSeekerDtoIn {
 
     @NotNull
     private BigInteger id;
+
     @NotEmpty
-    private String careerObj;
+    private String name;
+
     @NotEmpty
-    private String title;
+    @ValidDate
+    private String birthday;
+
+    private String address;
+
     @NotNull
-    private Integer salary;
-    @NotEmpty
-    private String fieldIds;
-    @NotEmpty
-    private String provinceIds;
+    private Integer provinceId;
 
 }

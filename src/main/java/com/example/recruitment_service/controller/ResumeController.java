@@ -1,16 +1,12 @@
 package com.example.recruitment_service.controller;
 
 import com.example.recruitment_service.common.controller.ResponseController;
-import com.example.recruitment_service.common.response.ApiResponse;
-import com.example.recruitment_service.dto.dtoIn.PageDtoIn;
-import com.example.recruitment_service.dto.dtoIn.ResumeDtoIn;
-import com.example.recruitment_service.dto.dtoIn.UpdatedResumeDtoIn;
-import com.example.recruitment_service.dto.dtoIn.UpdatedSeekerDtoIn;
-import com.example.recruitment_service.dto.dtoOut.ResumeDtoOut;
+import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.ResumeDtoIn;
+import com.example.recruitment_service.dto.dtoIn.updateEntity.UpdatedResumeDtoIn;
 import com.example.recruitment_service.service.ResumeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

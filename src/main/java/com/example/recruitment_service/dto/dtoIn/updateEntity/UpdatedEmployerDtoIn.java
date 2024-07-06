@@ -1,14 +1,10 @@
-package com.example.recruitment_service.dto.dtoIn;
+package com.example.recruitment_service.dto.dtoIn.updateEntity;
 
-import com.example.recruitment_service.model.Employer;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
 @Builder

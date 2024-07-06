@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.HashMap;
 
@@ -13,7 +14,7 @@ import java.util.HashMap;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResumeDtoOut {
+public class ResumeDtoOut implements Serializable {
 
     private BigInteger id;
     private BigInteger seekerId;

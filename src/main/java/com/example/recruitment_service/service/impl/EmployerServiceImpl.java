@@ -1,8 +1,8 @@
 package com.example.recruitment_service.service.impl;
 
-import com.example.recruitment_service.dto.dtoIn.EmployerDtoIn;
-import com.example.recruitment_service.dto.dtoIn.PageDtoIn;
-import com.example.recruitment_service.dto.dtoIn.UpdatedEmployerDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.EmployerDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
+import com.example.recruitment_service.dto.dtoIn.updateEntity.UpdatedEmployerDtoIn;
 import com.example.recruitment_service.dto.dtoOut.EmployerDtoOut;
 import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
 import com.example.recruitment_service.common.errorCode.ErrorCode;
@@ -11,6 +11,10 @@ import com.example.recruitment_service.model.Employer;
 import com.example.recruitment_service.repository.EmployerRepository;
 import com.example.recruitment_service.service.EmployerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +26,7 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class EmployerServiceImpl implements EmployerService {
 
     private final EmployerRepository employerRepository;
@@ -36,6 +41,7 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
+    @CachePut(value = "employers", key = "#id")
     public void updateEmployer(long id, UpdatedEmployerDtoIn updatedEmployer) {
         Employer employer = employerRepository.findById(id).orElseThrow(() ->
             new ApiException(ErrorCode.DATA_NOT_FOUND, HttpStatus.BAD_REQUEST, "Employer not found")
@@ -49,6 +55,7 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
+    @Cacheable(value = "employers", key = "#id")
     public EmployerDtoOut getEmployerById(Long id) {
         Employer employer = employerRepository.findById(id).orElseThrow(() ->
             new ApiException(ErrorCode.DATA_NOT_FOUND, HttpStatus.BAD_REQUEST, "Employer not found")
@@ -58,15 +65,18 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
+    @Cacheable(value = "employers")
     public PageDtoOut<EmployerDtoOut> getAllEmployers(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize()
                 , Sort.by("id").ascending());
         Page<Employer> page = employerRepository.findAll(pageable);
+        log.info("Page 1 is displayed");
         return PageDtoOut.from(page.getTotalPages(), page.getSize(), page.getTotalElements()
         , page.stream().map(EmployerDtoOut::from).toList());
     }
 
     @Override
+    @CacheEvict(value = "employers", key = "#id")
     public void deleteEmployer(Long id) {
         if(!employerRepository.existsById(id)) {
             EmployerDtoOut.builder().build();

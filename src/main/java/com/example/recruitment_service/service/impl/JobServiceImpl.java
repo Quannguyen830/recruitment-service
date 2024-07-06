@@ -1,22 +1,23 @@
 package com.example.recruitment_service.service.impl;
 
-import com.example.recruitment_service.dto.dtoIn.JobDtoIn;
-import com.example.recruitment_service.dto.dtoIn.PageDtoIn;
-import com.example.recruitment_service.dto.dtoIn.UpdatedJobDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.JobDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
+import com.example.recruitment_service.dto.dtoIn.updateEntity.UpdatedJobDtoIn;
 import com.example.recruitment_service.dto.dtoOut.JobDtoOut;
 import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
 import com.example.recruitment_service.common.errorCode.ErrorCode;
 import com.example.recruitment_service.common.exception.ApiException;
 import com.example.recruitment_service.model.Employer;
 import com.example.recruitment_service.model.Job;
-import com.example.recruitment_service.model.JobField;
-import com.example.recruitment_service.model.JobProvince;
 import com.example.recruitment_service.repository.EmployerRepository;
 import com.example.recruitment_service.repository.JobFieldRepository;
 import com.example.recruitment_service.repository.JobProvinceRepository;
 import com.example.recruitment_service.repository.JobRepository;
 import com.example.recruitment_service.service.JobService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +45,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @CachePut(value = "jobs", key = "#id")
     public void updateJob(BigInteger id, UpdatedJobDtoIn updatedJobDtoIn) {
         Job job = jobRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Job not found")
@@ -63,6 +64,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @Cacheable(value = "jobs", key = "#id")
     public JobDtoOut findJobById(BigInteger id) {
         Job job = jobRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Job not found")
@@ -71,6 +73,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @Cacheable(value = "jobs")
     public PageDtoOut<JobDtoOut> findAllJobs(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize());
         Page<Job> page = jobRepository.findAllJobsSorted(pageable);
@@ -79,6 +82,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @CacheEvict(value = "jobs", key = "#id")
     public void deleteJobById(BigInteger id) {
         if(jobRepository.findById(id).isPresent()) {
             jobRepository.deleteById(id);
@@ -90,9 +94,9 @@ public class JobServiceImpl implements JobService {
     private HashMap<Integer, String> getProvinces(String jobProvince) {
         HashMap<Integer, String> provinces = new HashMap<>();
         String[] provinceIds = jobProvince.split("-");
-        for(String provinceId: provinceIds) {
-            Integer provinceIdValue = Integer.valueOf(provinceId);
-            provinces.put(provinceIdValue, fieldRepository.findById(provinceIdValue).orElseThrow(
+        for(int i=1; i<provinceIds.length; i++) {
+            Integer provinceIdValue = Integer.valueOf(provinceIds[i]);
+            provinces.put(provinceIdValue, provinceRepository.findById(provinceIdValue).orElseThrow(
                     () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Province not found")
             ).getName());
         }
@@ -102,8 +106,8 @@ public class JobServiceImpl implements JobService {
     private HashMap<Integer, String> getFields(String jobField) {
         HashMap<Integer, String> fields = new HashMap<>();
         String[] fieldIds = jobField.split("-");
-        for(String fieldId: fieldIds) {
-            Integer fieldIdValue = Integer.valueOf(fieldId);
+        for(int i=1; i<fieldIds.length; i++) {
+            Integer fieldIdValue = Integer.valueOf(fieldIds[i]);
             fields.put(fieldIdValue, fieldRepository.findById(fieldIdValue).orElseThrow(
                     () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Field not found")
             ).getName());

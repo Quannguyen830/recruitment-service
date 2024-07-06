@@ -1,6 +1,6 @@
-package com.example.recruitment_service.dto.dtoIn;
+package com.example.recruitment_service.dto.dtoIn.entity;
 
-import com.example.recruitment_service.common.annotation.ValidBirthday;
+import com.example.recruitment_service.common.annotation.ValidDate;
 import com.example.recruitment_service.model.Seeker;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +19,7 @@ public class SeekerDtoIn {
     private String name;
 
     @NotEmpty
-    @ValidBirthday
+    @ValidDate
     private String birthday;
 
     private String address;

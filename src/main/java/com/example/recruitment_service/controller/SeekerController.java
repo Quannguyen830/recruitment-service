@@ -1,10 +1,9 @@
 package com.example.recruitment_service.controller;
 
 import com.example.recruitment_service.common.controller.ResponseController;
-import com.example.recruitment_service.dto.dtoIn.PageDtoIn;
-import com.example.recruitment_service.dto.dtoIn.SeekerDtoIn;
-import com.example.recruitment_service.dto.dtoIn.UpdatedSeekerDtoIn;
-import com.example.recruitment_service.dto.dtoOut.SeekerDtoOut;
+import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.SeekerDtoIn;
+import com.example.recruitment_service.dto.dtoIn.updateEntity.UpdatedSeekerDtoIn;
 import com.example.recruitment_service.service.SeekerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

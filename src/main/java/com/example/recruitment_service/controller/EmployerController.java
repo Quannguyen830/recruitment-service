@@ -1,8 +1,8 @@
 package com.example.recruitment_service.controller;
 
-import com.example.recruitment_service.dto.dtoIn.EmployerDtoIn;
-import com.example.recruitment_service.dto.dtoIn.PageDtoIn;
-import com.example.recruitment_service.dto.dtoIn.UpdatedEmployerDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.EmployerDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
+import com.example.recruitment_service.dto.dtoIn.updateEntity.UpdatedEmployerDtoIn;
 import com.example.recruitment_service.common.controller.ResponseController;
 import com.example.recruitment_service.service.impl.EmployerServiceImpl;
 import jakarta.validation.Valid;

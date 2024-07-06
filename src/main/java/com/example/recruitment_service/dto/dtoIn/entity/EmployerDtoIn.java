@@ -1,4 +1,4 @@
-package com.example.recruitment_service.dto.dtoIn;
+package com.example.recruitment_service.dto.dtoIn.entity;
 
 import com.example.recruitment_service.model.Employer;
 import jakarta.validation.constraints.Email;
@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 

@@ -1,4 +1,4 @@
-package com.example.recruitment_service.dto.dtoIn;
+package com.example.recruitment_service.dto.dtoIn.entity;
 
 import com.example.recruitment_service.model.Resume;
 import jakarta.validation.constraints.NotEmpty;
@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
