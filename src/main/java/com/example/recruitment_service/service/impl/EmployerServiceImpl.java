@@ -26,7 +26,6 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
-@Log4j2
 public class EmployerServiceImpl implements EmployerService {
 
     private final EmployerRepository employerRepository;
@@ -70,7 +69,6 @@ public class EmployerServiceImpl implements EmployerService {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize()
                 , Sort.by("id").ascending());
         Page<Employer> page = employerRepository.findAll(pageable);
-        log.info("Page 1 is displayed");
         return PageDtoOut.from(page.getTotalPages(), page.getSize(), page.getTotalElements()
         , page.stream().map(EmployerDtoOut::from).toList());
     }

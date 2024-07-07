@@ -2,7 +2,6 @@ package com.example.recruitment_service.common.exception;
 
 import com.example.recruitment_service.common.controller.ResponseController;
 import com.example.recruitment_service.common.response.ApiResponse;
-import com.example.recruitment_service.model.Employer;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
