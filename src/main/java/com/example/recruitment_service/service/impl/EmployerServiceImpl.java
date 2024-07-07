@@ -11,7 +11,6 @@ import com.example.recruitment_service.model.Employer;
 import com.example.recruitment_service.repository.EmployerRepository;
 import com.example.recruitment_service.service.EmployerService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
