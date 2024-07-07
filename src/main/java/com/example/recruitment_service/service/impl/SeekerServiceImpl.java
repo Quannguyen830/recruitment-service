@@ -2,11 +2,11 @@ package com.example.recruitment_service.service.impl;
 
 import com.example.recruitment_service.common.errorCode.ErrorCode;
 import com.example.recruitment_service.common.exception.ApiException;
-import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
-import com.example.recruitment_service.dto.dtoIn.entity.SeekerDtoIn;
-import com.example.recruitment_service.dto.dtoIn.updateEntity.UpdatedSeekerDtoIn;
-import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
-import com.example.recruitment_service.dto.dtoOut.SeekerDtoOut;
+import com.example.recruitment_service.dto.request.entity.PageDtoIn;
+import com.example.recruitment_service.dto.request.entity.SeekerDtoIn;
+import com.example.recruitment_service.dto.request.updateEntity.UpdatedSeekerDtoIn;
+import com.example.recruitment_service.dto.response.PageDtoOut;
+import com.example.recruitment_service.dto.response.SeekerDtoOut;
 import com.example.recruitment_service.model.JobProvince;
 import com.example.recruitment_service.model.Seeker;
 import com.example.recruitment_service.repository.JobProvinceRepository;

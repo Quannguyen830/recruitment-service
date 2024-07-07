@@ -1,4 +1,4 @@
-package com.example.recruitment_service.dto.dtoIn.updateEntity;
+package com.example.recruitment_service.dto.request.updateEntity;
 
 import com.example.recruitment_service.common.annotation.ValidDate;
 import jakarta.validation.constraints.NotEmpty;

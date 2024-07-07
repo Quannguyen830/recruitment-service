@@ -1,9 +1,10 @@
 package com.example.recruitment_service.controller;
 
-import com.example.recruitment_service.dto.dtoIn.entity.EmployerDtoIn;
-import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
-import com.example.recruitment_service.dto.dtoIn.updateEntity.UpdatedEmployerDtoIn;
+import com.example.recruitment_service.dto.request.entity.EmployerDtoIn;
+import com.example.recruitment_service.dto.request.entity.PageDtoIn;
+import com.example.recruitment_service.dto.request.updateEntity.UpdatedEmployerDtoIn;
 import com.example.recruitment_service.common.controller.ResponseController;
+import com.example.recruitment_service.service.impl.BaseRedisServiceImpl;
 import com.example.recruitment_service.service.impl.EmployerServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +18,14 @@ import org.springframework.web.bind.annotation.*;
 public class EmployerController {
 
     private final EmployerServiceImpl employerService;
+    private final BaseRedisServiceImpl baseRedisService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<?> addEmployer(@Valid @RequestBody EmployerDtoIn employer) {
         return ResponseController.responseEntity(() -> employerService.createEmployer(employer), HttpStatus.CREATED);
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<?> getAllEmployers(@Valid PageDtoIn pageDtoIn) {
         return ResponseController.responseEntity(() -> employerService.getAllEmployers(pageDtoIn));
     }
@@ -36,6 +38,7 @@ public class EmployerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getEmployerById(@PathVariable long id) {
+        baseRedisService.set("employer",String.valueOf(id));
         return ResponseController.responseEntity(() -> employerService.getEmployerById(id), HttpStatus.OK);
     }
 

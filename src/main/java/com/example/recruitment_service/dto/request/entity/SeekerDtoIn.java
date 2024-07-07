@@ -1,4 +1,4 @@
-package com.example.recruitment_service.dto.dtoIn.entity;
+package com.example.recruitment_service.dto.request.entity;
 
 import com.example.recruitment_service.common.annotation.ValidDate;
 import com.example.recruitment_service.model.Seeker;
