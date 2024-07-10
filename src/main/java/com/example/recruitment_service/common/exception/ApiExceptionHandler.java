@@ -26,8 +26,7 @@ public class ApiExceptionHandler {
 
     private ResponseEntity<?> responseEntity(int errorCode, HttpStatus httpStatus, String message) {
         return new ResponseEntity<>(
-                ApiResponse.builder().errorCode(errorCode).statusCode(httpStatus.value())
-                        .message(message).build(), httpStatus
+                ApiResponse.error(errorCode, httpStatus.value(), message), httpStatus
         );
     }
 }
