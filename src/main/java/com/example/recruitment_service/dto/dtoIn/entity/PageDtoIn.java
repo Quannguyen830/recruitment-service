@@ -1,4 +1,4 @@
-package com.example.recruitment_service.dto.request.entity;
+package com.example.recruitment_service.dto.dtoIn.entity;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

@@ -1,4 +1,4 @@
-package com.example.recruitment_service.dto.request.entity;
+package com.example.recruitment_service.dto.dtoIn.updateEntity;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -7,17 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class LoginDtoIn {
+public class UpdatedEmployerDtoIn {
+
+    @NotEmpty
+    private Long id;
+
     @NotEmpty
     private String username;
 
     @NotEmpty
-    private String password;
+    private int provinceId;
+    private String description;
 
-    public String getUsername() {
-        return this.username.toLowerCase();
-    }
 }

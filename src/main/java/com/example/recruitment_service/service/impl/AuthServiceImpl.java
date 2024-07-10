@@ -2,8 +2,8 @@ package com.example.recruitment_service.service.impl;
 
 import com.example.recruitment_service.common.errorCode.ErrorCode;
 import com.example.recruitment_service.common.exception.ApiException;
-import com.example.recruitment_service.dto.request.entity.LoginDtoIn;
-import com.example.recruitment_service.dto.response.LoginDtoOut;
+import com.example.recruitment_service.dto.dtoIn.entity.LoginDtoIn;
+import com.example.recruitment_service.dto.dtoOut.LoginDtoOut;
 import com.example.recruitment_service.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -47,7 +47,8 @@ public class AuthServiceImpl implements AuthService {
         long iat = System.currentTimeMillis() / 1000;
         long exp = iat + Duration.ofHours(8).toSeconds();
 
-        JwtEncoderParameters parameters = JwtEncoderParameters.from(JwsHeader.with(SignatureAlgorithm.RS256).build(),
+        JwtEncoderParameters parameters = JwtEncoderParameters.from(
+                JwsHeader.with(SignatureAlgorithm.RS256).build(),
                 JwtClaimsSet.builder().subject(username).issuedAt(Instant.ofEpochSecond(iat))
                         .expiresAt(Instant.ofEpochSecond(exp)).claim("user_name", username)
                         .claim("scope", List.of("ADMIN")).build());

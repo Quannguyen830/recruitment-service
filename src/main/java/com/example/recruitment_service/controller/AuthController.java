@@ -1,7 +1,7 @@
 package com.example.recruitment_service.controller;
 
 import com.example.recruitment_service.common.controller.ResponseController;
-import com.example.recruitment_service.dto.request.entity.LoginDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.LoginDtoIn;
 import com.example.recruitment_service.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

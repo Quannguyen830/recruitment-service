@@ -1,4 +1,4 @@
-package com.example.recruitment_service.dto.request.filter;
+package com.example.recruitment_service.dto.dtoIn.filter;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

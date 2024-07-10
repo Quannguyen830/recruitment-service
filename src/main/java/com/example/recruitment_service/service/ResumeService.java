@@ -1,10 +1,10 @@
 package com.example.recruitment_service.service;
 
-import com.example.recruitment_service.dto.request.entity.PageDtoIn;
-import com.example.recruitment_service.dto.request.entity.ResumeDtoIn;
-import com.example.recruitment_service.dto.request.updateEntity.UpdatedResumeDtoIn;
-import com.example.recruitment_service.dto.response.PageDtoOut;
-import com.example.recruitment_service.dto.response.ResumeDtoOut;
+import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
+import com.example.recruitment_service.dto.dtoIn.entity.ResumeDtoIn;
+import com.example.recruitment_service.dto.dtoIn.updateEntity.UpdatedResumeDtoIn;
+import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
+import com.example.recruitment_service.dto.dtoOut.ResumeDtoOut;
 
 import java.math.BigInteger;
 

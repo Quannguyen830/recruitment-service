@@ -1,4 +1,4 @@
-package com.example.recruitment_service.dto.response;
+package com.example.recruitment_service.dto.dtoOut;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +35,8 @@ public class PageDtoOut<T> implements Serializable {
         if(totalElements % pageSize != 0) {
             totalPages++;
         }
-        return PageDtoOut.<T>builder().page(page).pageSize(pageSize).totalElements(totalElements).totalPages(totalPages).data(data).build();
+        return PageDtoOut.<T>builder().page(page).pageSize(pageSize).totalElements(totalElements)
+                .totalPages(totalPages).data(data).build();
     }
 
 }

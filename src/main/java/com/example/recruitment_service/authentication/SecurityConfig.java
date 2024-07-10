@@ -38,12 +38,12 @@ public class SecurityConfig {
     private final CustomAuthEntryPoint customAuthEntryPoint;
 
     @Bean
-    public SecurityFilterChain springSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
                         .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/auth/login", "/actuator/**").permitAll()
+                        .requestMatchers("/auth/login", "/employers/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(configurer -> {
                     configurer.authenticationEntryPoint(customAuthEntryPoint);
@@ -64,7 +64,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails user = User.builder()
-                .username("user")
+                .username("quan")
                 .password(passwordEncoder.encode("password"))
                 .roles("USER")
                 .build();

@@ -1,4 +1,4 @@
-package com.example.recruitment_service.dto.request.entity;
+package com.example.recruitment_service.dto.dtoIn.entity;
 
 import com.example.recruitment_service.model.Employer;
 import jakarta.validation.constraints.Email;

@@ -30,5 +30,4 @@ public class ApiExceptionHandler {
                         .message(message).build(), httpStatus
         );
     }
-
 }

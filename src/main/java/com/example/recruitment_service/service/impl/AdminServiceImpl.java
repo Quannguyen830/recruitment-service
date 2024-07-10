@@ -2,9 +2,9 @@ package com.example.recruitment_service.service.impl;
 
 import com.example.recruitment_service.common.errorCode.ErrorCode;
 import com.example.recruitment_service.common.exception.ApiException;
-import com.example.recruitment_service.dto.request.filter.FilterByDayDtoIn;
-import com.example.recruitment_service.dto.response.FilterByDayDtoOut;
-import com.example.recruitment_service.dto.response.FilterByJobDtoOut;
+import com.example.recruitment_service.dto.dtoIn.filter.FilterByDayDtoIn;
+import com.example.recruitment_service.dto.dtoOut.FilterByDayDtoOut;
+import com.example.recruitment_service.dto.dtoOut.FilterByJobDtoOut;
 import com.example.recruitment_service.model.*;
 import com.example.recruitment_service.repository.*;
 import com.example.recruitment_service.service.AdminService;
