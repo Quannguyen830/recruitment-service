@@ -49,8 +49,11 @@ public class AuthServiceImpl implements AuthService {
 
         JwtEncoderParameters parameters = JwtEncoderParameters.from(
                 JwsHeader.with(SignatureAlgorithm.RS256).build(),
-                JwtClaimsSet.builder().subject(username).issuedAt(Instant.ofEpochSecond(iat))
-                        .expiresAt(Instant.ofEpochSecond(exp)).claim("user_name", username)
+                JwtClaimsSet.builder()
+                        .subject(username)
+                        .issuedAt(Instant.ofEpochSecond(iat))
+                        .expiresAt(Instant.ofEpochSecond(exp))
+                        .claim("user_name", username)
                         .claim("scope", List.of("ADMIN")).build());
         try {
             return jwtEncoder.encode(parameters).getTokenValue();
