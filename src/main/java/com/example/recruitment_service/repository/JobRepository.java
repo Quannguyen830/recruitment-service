@@ -22,7 +22,4 @@ public interface JobRepository extends JpaRepository<Job, BigInteger> {
 
     @Query("SELECT COUNT(j) FROM Job j WHERE j.created_at = :date")
     Long countJobByDate(@Param("date") LocalDate date);
-
-    @Query("SELECT j FROM Job j ORDER BY j.expired_at DESC")
-    List<Job> findAllJobsOrderByExpiredAtDesc();
 }

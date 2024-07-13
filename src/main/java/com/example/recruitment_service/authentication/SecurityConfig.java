@@ -1,5 +1,7 @@
 package com.example.recruitment_service.authentication;
 
+import com.example.recruitment_service.common.errorCode.ErrorCode;
+import com.example.recruitment_service.common.exception.ApiException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -9,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -42,7 +45,7 @@ public class SecurityConfig {
         http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
                         .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((requests) -> requests
+                .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/auth/login", "/employers/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(configurer -> {
@@ -53,7 +56,7 @@ public class SecurityConfig {
                                     .withPublicKey(readPublicKey(new ClassPathResource("public.pem"))).build());
                         } catch (Exception e) {
                             log.error("Error: ", e);
-                            throw new RuntimeException(e);
+                            throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.UNAUTHORIZED, e.getMessage());
                         }
                     });
                 });
@@ -69,7 +72,13 @@ public class SecurityConfig {
                 .roles("USER")
                 .build();
 
-        return new InMemoryUserDetailsManager(user);
+        UserDetails user1 = User.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("password"))
+                .roles("USER")
+                .build();
+
+        return new InMemoryUserDetailsManager(user, user1);
     }
 
     @Bean

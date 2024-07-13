@@ -18,4 +18,9 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody @Valid LoginDtoIn loginDtoIn) {
         return ResponseController.responseEntity(() -> authService.login(loginDtoIn));
     }
+
+    @GetMapping("/")
+    public String home() {
+        return ("<h1>Welcome</h1>");
+    }
 }
