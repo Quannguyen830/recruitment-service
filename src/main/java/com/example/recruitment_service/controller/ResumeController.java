@@ -22,7 +22,7 @@ public class ResumeController {
 
     @PostMapping("")
     public ResponseEntity<?> createResume(@Valid @RequestBody ResumeDtoIn resumeDtoIn) {
-        return ResponseController.responseEntity(() -> resumeService.add(resumeDtoIn));
+        return ResponseController.responseEntity(() -> resumeService.add(resumeDtoIn), HttpStatus.CREATED);
     }
 
     @PutMapping("")

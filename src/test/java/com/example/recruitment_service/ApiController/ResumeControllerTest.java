@@ -113,8 +113,8 @@ public class ResumeControllerTest {
     void get() throws Exception {
         BigInteger id = BigInteger.valueOf(8514215);
 
-        String uri = UriComponentsBuilder.fromUriString("/resumes")
-                .queryParam("id", id)
+        String uri = UriComponentsBuilder.fromUriString("/resumes/{id}")
+                .buildAndExpand(id)
                 .toUriString();
 
         mockMvc.perform(MockMvcRequestBuilders.get(uri)
@@ -134,6 +134,11 @@ public class ResumeControllerTest {
     void add() throws Exception {
         ResumeDtoIn resumeDtoIn = new ResumeDtoIn();
         resumeDtoIn.setTitle("Resume 1");
+        resumeDtoIn.setSalary(100);
+        resumeDtoIn.setCareerObj("Career Object");
+        resumeDtoIn.setSeekerId(BigInteger.valueOf(4452654));
+        resumeDtoIn.setFieldIds("-64-");
+        resumeDtoIn.setProvinceIds(("-1-"));
 
         var uri = UriComponentsBuilder.fromUriString("/resumes")
                 .toUriString();

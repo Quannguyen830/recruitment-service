@@ -19,7 +19,6 @@ public class SeekerDtoIn {
     private String name;
 
     @NotEmpty
-    @ValidDate
     private String birthday;
 
     private String address;

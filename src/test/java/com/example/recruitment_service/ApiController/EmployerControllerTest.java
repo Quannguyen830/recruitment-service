@@ -114,8 +114,8 @@ public class EmployerControllerTest {
         BigInteger id = BigInteger.valueOf(2);
         String name = "Quan123";
 
-        String uri = UriComponentsBuilder.fromUriString("/employers")
-                .queryParam("id", id)
+        String uri = UriComponentsBuilder.fromUriString("/employers/{id}")
+                .buildAndExpand(id)
                 .toUriString();
 
         mockMvc.perform(MockMvcRequestBuilders.get(uri)
@@ -131,10 +131,13 @@ public class EmployerControllerTest {
                 });
     }
 
-
+    @Test
     void add() throws Exception {
         EmployerDtoIn employerDtoIn = new EmployerDtoIn();
         employerDtoIn.setName("quan");
+        employerDtoIn.setEmail("example@gmail.com");
+        employerDtoIn.setDescription("lorem");
+        employerDtoIn.setProvinceId(1);
 
         var uri = UriComponentsBuilder.fromUriString("/employers")
                 .toUriString();

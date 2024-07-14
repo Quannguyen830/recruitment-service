@@ -22,7 +22,7 @@ public class SeekerController {
 
     @PostMapping("")
     public ResponseEntity<?> createSeeker(@Valid @RequestBody SeekerDtoIn seekerDtoIn) {
-        return ResponseController.responseEntity(() -> seekerService.add(seekerDtoIn));
+        return ResponseController.responseEntity(() -> seekerService.add(seekerDtoIn), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

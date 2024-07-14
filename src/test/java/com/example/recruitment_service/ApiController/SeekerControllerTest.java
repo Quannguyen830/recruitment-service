@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 
 @SpringBootTest()
 @AutoConfigureMockMvc
@@ -114,8 +115,8 @@ public class SeekerControllerTest {
         BigInteger id = BigInteger.valueOf(4452654);
         String name = "Đỗ Xuân Kỳ";
 
-        String uri = UriComponentsBuilder.fromUriString("/seekers")
-                .queryParam("id", id)
+        String uri = UriComponentsBuilder.fromUriString("/seekers/{id}")
+                .buildAndExpand(id)
                 .toUriString();
 
         mockMvc.perform(MockMvcRequestBuilders.get(uri)
@@ -127,7 +128,7 @@ public class SeekerControllerTest {
                             });
                     Assertions.assertNotNull(response);
                     Assertions.assertNotNull(response.getData());
-                    Assertions.assertEquals(name, response.getData().getName());
+                    Assertions.assertEquals(id, response.getData().getId());
                 });
     }
 
@@ -135,6 +136,9 @@ public class SeekerControllerTest {
     void add() throws Exception {
         SeekerDtoIn seekerDtoIn = new SeekerDtoIn();
         seekerDtoIn.setName("quan");
+        seekerDtoIn.setBirthday(LocalDate.now().toString());
+        seekerDtoIn.setAddress("71 riverdale");
+        seekerDtoIn.setProvinceId(1);
 
         var uri = UriComponentsBuilder.fromUriString("/seekers")
                 .toUriString();
