@@ -9,9 +9,9 @@ import com.example.recruitment_service.dto.dtoOut.SeekerDtoOut;
 import java.math.BigInteger;
 
 public interface SeekerService {
-    SeekerDtoOut createSeeker(SeekerDtoIn seekerDtoIn);
-    void updateSeeker(BigInteger id, UpdatedSeekerDtoIn updatedSeekerDtoIn);
-    SeekerDtoOut findSeekerById(BigInteger id);
-    PageDtoOut<SeekerDtoOut> findAllSeeker(PageDtoIn pageDtoIn);
-    void deleteSeeker(BigInteger id);
+    SeekerDtoOut add(SeekerDtoIn seekerDtoIn);
+    void update(BigInteger id, UpdatedSeekerDtoIn updatedSeekerDtoIn);
+    SeekerDtoOut get(BigInteger id);
+    PageDtoOut<SeekerDtoOut> list(PageDtoIn pageDtoIn);
+    void delete(BigInteger id);
 }

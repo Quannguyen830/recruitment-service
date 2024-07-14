@@ -38,7 +38,7 @@ public class ResumeServiceImpl implements ResumeService {
     private final JobProvinceRepository jobProvinceRepository;
 
     @Override
-    public ResumeDtoOut createResume(ResumeDtoIn resumeDtoIn) {
+    public ResumeDtoOut add(ResumeDtoIn resumeDtoIn) {
         Resume resume = ResumeDtoIn.from(resumeDtoIn);
         resumeRepository.save(resume);
         return getResumeDtoOut(resume);
@@ -46,7 +46,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     @CachePut(value = "resumes", key = "#id")
-    public void updateResume(BigInteger id, UpdatedResumeDtoIn updatedResumeDtoIn) {
+    public void update(BigInteger id, UpdatedResumeDtoIn updatedResumeDtoIn) {
         Resume resume = resumeRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Resume not found")
         );
@@ -61,7 +61,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     @Cacheable(value = "resumes", key = "#id")
-    public ResumeDtoOut findResumeById(BigInteger id) {
+    public ResumeDtoOut get(BigInteger id) {
         Resume resume = resumeRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Resume not found")
         );
@@ -70,7 +70,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     @Cacheable(value = "resumes")
-    public PageDtoOut<ResumeDtoOut> findAllResume(PageDtoIn pageDtoIn) {
+    public PageDtoOut<ResumeDtoOut> list(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize());
         Page<Resume> page = resumeRepository.findAllResumeSorted(pageable);
         return PageDtoOut.from(page.getTotalPages(), page.getSize(), page.getTotalElements(),
@@ -79,7 +79,7 @@ public class ResumeServiceImpl implements ResumeService {
 
     @Override
     @CacheEvict(value = "resumes", key = "#id")
-    public void deleteResume(BigInteger id) {
+    public void delete(BigInteger id) {
         Resume resume = resumeRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Resume not found")
         );

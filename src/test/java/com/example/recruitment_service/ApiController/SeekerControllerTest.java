@@ -1,13 +1,13 @@
 package com.example.recruitment_service.ApiController;
 
 import com.example.recruitment_service.common.response.ApiResponse;
-import com.example.recruitment_service.dto.dtoIn.entity.EmployerDtoIn;
 import com.example.recruitment_service.dto.dtoIn.entity.LoginDtoIn;
 import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
-import com.example.recruitment_service.dto.dtoOut.EmployerDtoOut;
+import com.example.recruitment_service.dto.dtoIn.entity.SeekerDtoIn;
 import com.example.recruitment_service.dto.dtoOut.JobDtoOut;
 import com.example.recruitment_service.dto.dtoOut.LoginDtoOut;
 import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
+import com.example.recruitment_service.dto.dtoOut.SeekerDtoOut;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +28,7 @@ import java.math.BigInteger;
 
 @SpringBootTest()
 @AutoConfigureMockMvc
-public class EmployerControllerTest {
+public class SeekerControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -62,7 +62,7 @@ public class EmployerControllerTest {
         pageDtoIn.setPage(2);
         pageDtoIn.setPageSize(10);
 
-        var uri = UriComponentsBuilder.fromUriString("/employers")
+        var uri = UriComponentsBuilder.fromUriString("/seekers")
                 .queryParam("page", pageDtoIn.getPage())
                 .queryParam("pageSize", pageDtoIn.getPageSize())
                 .toUriString();
@@ -111,10 +111,10 @@ public class EmployerControllerTest {
 
     @Test
     void get() throws Exception {
-        BigInteger id = BigInteger.valueOf(2);
-        String name = "Quan123";
+        BigInteger id = BigInteger.valueOf(4452654);
+        String name = "Đỗ Xuân Kỳ";
 
-        String uri = UriComponentsBuilder.fromUriString("/employers")
+        String uri = UriComponentsBuilder.fromUriString("/seekers")
                 .queryParam("id", id)
                 .toUriString();
 
@@ -123,7 +123,7 @@ public class EmployerControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(result -> {
                     var response = objectMapper.readValue(result.getResponse().getContentAsString(),
-                            new TypeReference<ApiResponse<EmployerDtoOut>>() {
+                            new TypeReference<ApiResponse<SeekerDtoOut>>() {
                             });
                     Assertions.assertNotNull(response);
                     Assertions.assertNotNull(response.getData());
@@ -131,27 +131,27 @@ public class EmployerControllerTest {
                 });
     }
 
-
+    @Test
     void add() throws Exception {
-        EmployerDtoIn employerDtoIn = new EmployerDtoIn();
-        employerDtoIn.setName("quan");
+        SeekerDtoIn seekerDtoIn = new SeekerDtoIn();
+        seekerDtoIn.setName("quan");
 
-        var uri = UriComponentsBuilder.fromUriString("/employers")
+        var uri = UriComponentsBuilder.fromUriString("/seekers")
                 .toUriString();
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(employerDtoIn)))
+                        .content(objectMapper.writeValueAsBytes(seekerDtoIn)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(result -> {
                     var response = objectMapper.readValue(result.getResponse().getContentAsString(),
-                            new TypeReference<ApiResponse<EmployerDtoOut>>() {
+                            new TypeReference<ApiResponse<SeekerDtoOut>>() {
                             });
                     Assertions.assertNotNull(response);
                     Assertions.assertNotNull(response.getData());
-                    Assertions.assertEquals(employerDtoIn.getName(), response.getData().getName());
+                    Assertions.assertEquals(seekerDtoIn.getName(), response.getData().getName());
                 });
     }
 }

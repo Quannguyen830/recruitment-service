@@ -38,7 +38,7 @@ public class JobServiceImpl implements JobService {
     private final JobFieldRepository fieldRepository;
 
     @Override
-    public JobDtoOut createJob(JobDtoIn jobDtoIn) {
+    public JobDtoOut add(JobDtoIn jobDtoIn) {
         Job job = JobDtoIn.from(jobDtoIn);
         jobRepository.save(job);
         return getJobDtoOut(job);
@@ -46,7 +46,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @CachePut(value = "jobs", key = "#id")
-    public void updateJob(BigInteger id, UpdatedJobDtoIn updatedJobDtoIn) {
+    public void update(BigInteger id, UpdatedJobDtoIn updatedJobDtoIn) {
         Job job = jobRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Job not found")
         );
@@ -65,7 +65,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Cacheable(value = "jobs", key = "#id")
-    public JobDtoOut findJobById(BigInteger id) {
+    public JobDtoOut get(BigInteger id) {
         Job job = jobRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Job not found")
         );
@@ -74,7 +74,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Cacheable(value = "jobs")
-    public PageDtoOut<JobDtoOut> findAllJobs(PageDtoIn pageDtoIn) {
+    public PageDtoOut<JobDtoOut> list(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize());
         Page<Job> page = jobRepository.findAllJobsSorted(pageable);
         return PageDtoOut.from(page.getTotalPages(), page.getSize(), page.getTotalElements()
@@ -83,7 +83,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @CacheEvict(value = "jobs", key = "#id")
-    public void deleteJobById(BigInteger id) {
+    public void delete(BigInteger id) {
         if(jobRepository.findById(id).isPresent()) {
             jobRepository.deleteById(id);
         } else {

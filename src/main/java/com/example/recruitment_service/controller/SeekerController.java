@@ -22,7 +22,7 @@ public class SeekerController {
 
     @PostMapping("")
     public ResponseEntity<?> createSeeker(@Valid @RequestBody SeekerDtoIn seekerDtoIn) {
-        return ResponseController.responseEntity(() -> seekerService.createSeeker(seekerDtoIn));
+        return ResponseController.responseEntity(() -> seekerService.add(seekerDtoIn));
     }
 
     @PutMapping("/{id}")
@@ -30,23 +30,23 @@ public class SeekerController {
             @Valid @RequestBody UpdatedSeekerDtoIn updatedSeekerDtoIn,
             @PathVariable BigInteger id
     ) {
-        seekerService.updateSeeker(id, updatedSeekerDtoIn);
+        seekerService.update(id, updatedSeekerDtoIn);
         return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getSeekerById(@PathVariable BigInteger id) {
-        return ResponseController.responseEntity(() -> seekerService.findSeekerById(id));
+        return ResponseController.responseEntity(() -> seekerService.get(id));
     }
 
     @GetMapping("")
     public ResponseEntity<?> getAllSeekers(@Valid PageDtoIn pageDtoIn) {
-        return ResponseController.responseEntity(() -> seekerService.findAllSeeker(pageDtoIn));
+        return ResponseController.responseEntity(() -> seekerService.list(pageDtoIn));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSeeker(@PathVariable BigInteger id) {
-        seekerService.deleteSeeker(id);
+        seekerService.delete(id);
         return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 

@@ -20,9 +20,9 @@ public class JobController {
 
     private final JobServiceImpl jobService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<?> createJob(@Valid @RequestBody JobDtoIn jobDtoIn) {
-        return ResponseController.responseEntity(() -> jobService.createJob(jobDtoIn), HttpStatus.CREATED);
+        return ResponseController.responseEntity(() -> jobService.add(jobDtoIn), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -30,23 +30,23 @@ public class JobController {
             @Valid @RequestBody UpdatedJobDtoIn jobDtoIn,
             @PathVariable BigInteger id
     ) {
-        jobService.updateJob(id, jobDtoIn);
+        jobService.update(id, jobDtoIn);
         return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<?> getAllJobs(@Valid PageDtoIn pageDtoIn) {
-        return ResponseController.responseEntity(() -> jobService.findAllJobs(pageDtoIn));
+        return ResponseController.responseEntity(() -> jobService.list(pageDtoIn));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getJobById(@PathVariable BigInteger id) {
-        return ResponseController.responseEntity(() -> jobService.findJobById(id));
+        return ResponseController.responseEntity(() -> jobService.get(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteJobById(@PathVariable BigInteger id) {
-        jobService.deleteJobById(id);
+        jobService.delete(id);
         return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 

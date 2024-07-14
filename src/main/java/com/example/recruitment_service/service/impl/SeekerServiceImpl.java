@@ -35,7 +35,7 @@ public class SeekerServiceImpl implements SeekerService {
     private final JobProvinceRepository provinceRepository;
 
     @Override
-    public SeekerDtoOut createSeeker(SeekerDtoIn seekerDtoIn) {
+    public SeekerDtoOut add(SeekerDtoIn seekerDtoIn) {
         Seeker seeker = SeekerDtoIn.from(seekerDtoIn);
         seekerRepository.save(seeker);
         return SeekerDtoOut.from(seeker, getProvinceName(seeker.getProvince()));
@@ -43,7 +43,7 @@ public class SeekerServiceImpl implements SeekerService {
 
     @Override
     @CachePut(value = "seekers", key = "#id")
-    public void updateSeeker(BigInteger id, UpdatedSeekerDtoIn updatedSeekerDtoIn) {
+    public void update(BigInteger id, UpdatedSeekerDtoIn updatedSeekerDtoIn) {
         Seeker seekerFound = seekerRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Seeker not found")
         );
@@ -58,7 +58,7 @@ public class SeekerServiceImpl implements SeekerService {
 
     @Override
     @Cacheable(value = "seekers", key = "#id")
-    public SeekerDtoOut findSeekerById(BigInteger id) {
+    public SeekerDtoOut get(BigInteger id) {
         Seeker seekerFound = seekerRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Seeker not found")
         );
@@ -68,7 +68,7 @@ public class SeekerServiceImpl implements SeekerService {
 
     @Override
     @Cacheable(value = "seekers")
-    public PageDtoOut<SeekerDtoOut> findAllSeeker(PageDtoIn pageDtoIn) {
+    public PageDtoOut<SeekerDtoOut> list(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize(),
                 Sort.by("name").descending());
 
@@ -82,7 +82,7 @@ public class SeekerServiceImpl implements SeekerService {
 
     @Override
     @CacheEvict(value = "seekers", key = "#id")
-    public void deleteSeeker(BigInteger id) {
+    public void delete(BigInteger id) {
         Seeker seeker = seekerRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Seeker not found")
         );

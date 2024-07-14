@@ -22,7 +22,7 @@ public class ResumeController {
 
     @PostMapping("")
     public ResponseEntity<?> createResume(@Valid @RequestBody ResumeDtoIn resumeDtoIn) {
-        return ResponseController.responseEntity(() -> resumeService.createResume(resumeDtoIn));
+        return ResponseController.responseEntity(() -> resumeService.add(resumeDtoIn));
     }
 
     @PutMapping("")
@@ -30,23 +30,23 @@ public class ResumeController {
             BigInteger id,
             @Valid @RequestBody UpdatedResumeDtoIn updatedResumeDtoIn
     ) {
-        resumeService.updateResume(id, updatedResumeDtoIn);
+        resumeService.update(id, updatedResumeDtoIn);
         return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getResumeById(@PathVariable BigInteger id) {
-        return ResponseController.responseEntity(() -> resumeService.findResumeById(id));
+        return ResponseController.responseEntity(() -> resumeService.get(id));
     }
 
     @GetMapping("")
     public ResponseEntity<?> getAllResume(@Valid PageDtoIn pageDtoIn) {
-        return ResponseController.responseEntity(() -> resumeService.findAllResume(pageDtoIn));
+        return ResponseController.responseEntity(() -> resumeService.list(pageDtoIn));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteResume(@PathVariable BigInteger id) {
-        resumeService.deleteResume(id);
+        resumeService.delete(id);
         return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 }

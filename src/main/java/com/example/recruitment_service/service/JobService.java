@@ -9,9 +9,9 @@ import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
 import java.math.BigInteger;
 
 public interface JobService {
-    JobDtoOut createJob(JobDtoIn jobDtoIn);
-    void updateJob(BigInteger id, UpdatedJobDtoIn updatedJobDtoIn);
-    JobDtoOut findJobById(BigInteger id);
-    PageDtoOut<JobDtoOut> findAllJobs(PageDtoIn pageDtoIn);
-    void deleteJobById(BigInteger id);
+    JobDtoOut add(JobDtoIn jobDtoIn);
+    void update(BigInteger id, UpdatedJobDtoIn updatedJobDtoIn);
+    JobDtoOut get(BigInteger id);
+    PageDtoOut<JobDtoOut> list(PageDtoIn pageDtoIn);
+    void delete(BigInteger id);
 }

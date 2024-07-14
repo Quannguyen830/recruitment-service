@@ -32,7 +32,7 @@ public class EmployerServiceImpl implements EmployerService {
     private final EmployerRepository employerRepository;
 
     @Override
-    public EmployerDtoOut createEmployer(EmployerDtoIn employerDtoIn) {
+    public EmployerDtoOut add(EmployerDtoIn employerDtoIn) {
         if(employerRepository.findByEmail(employerDtoIn.getEmail()).isPresent()) {
             throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Email is already in use");
         }
@@ -42,7 +42,7 @@ public class EmployerServiceImpl implements EmployerService {
 
     @Override
     @CachePut(value = "employers", key = "#id")
-    public void updateEmployer(long id, UpdatedEmployerDtoIn updatedEmployer) {
+    public void update(long id, UpdatedEmployerDtoIn updatedEmployer) {
         Employer employer = employerRepository.findById(id).orElseThrow(() ->
             new ApiException(ErrorCode.DATA_NOT_FOUND, HttpStatus.BAD_REQUEST, "Employer not found")
         );
@@ -56,7 +56,7 @@ public class EmployerServiceImpl implements EmployerService {
 
     @Override
     @Cacheable(value = "employers", key = "#id")
-    public EmployerDtoOut getEmployerById(Long id) {
+    public EmployerDtoOut get(Long id) {
         Employer employer = employerRepository.findById(id).orElseThrow(() ->
             new ApiException(ErrorCode.DATA_NOT_FOUND, HttpStatus.BAD_REQUEST, "Employer not found")
         );
@@ -66,7 +66,7 @@ public class EmployerServiceImpl implements EmployerService {
 
     @Override
     @Cacheable(value = "employers")
-    public PageDtoOut<EmployerDtoOut> getAllEmployers(PageDtoIn pageDtoIn) {
+    public PageDtoOut<EmployerDtoOut> list(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize()
                 , Sort.by("id").ascending());
         Page<Employer> page = employerRepository.findAll(pageable);
@@ -77,7 +77,7 @@ public class EmployerServiceImpl implements EmployerService {
 
     @Override
     @CacheEvict(value = "employers", key = "#id")
-    public void deleteEmployer(Long id) {
+    public void delete(Long id) {
         if(!employerRepository.existsById(id)) {
             EmployerDtoOut.builder().build();
             return;

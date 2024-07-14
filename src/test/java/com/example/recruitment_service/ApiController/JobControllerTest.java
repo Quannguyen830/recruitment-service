@@ -1,13 +1,12 @@
 package com.example.recruitment_service.ApiController;
 
+import com.example.recruitment_service.dto.dtoIn.entity.JobDtoIn;
 import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
 import com.example.recruitment_service.dto.dtoOut.JobDtoOut;
 import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.example.recruitment_service.common.response.ApiResponse;
-import com.example.recruitment_service.controller.JobController;
 import com.example.recruitment_service.dto.dtoIn.entity.LoginDtoIn;
-
 import com.example.recruitment_service.dto.dtoOut.LoginDtoOut;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -15,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,7 +23,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@WebMvcTest(controllers = JobController.class)
+import java.math.BigInteger;
+import java.time.LocalDate;
+
+@SpringBootTest()
 @AutoConfigureMockMvc
 public class JobControllerTest {
     @Autowired
@@ -46,7 +48,6 @@ public class JobControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(loginDtoIn)))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(result -> {
                     var response = objectMapper.readValue(result.getResponse().getContentAsString(),
                             new TypeReference<ApiResponse<LoginDtoOut>>() {
@@ -59,19 +60,21 @@ public class JobControllerTest {
     void list() throws Exception {
         PageDtoIn pageDtoIn = new PageDtoIn();
         pageDtoIn.setPage(2);
-        pageDtoIn.setPageSize(100);
+        pageDtoIn.setPageSize(10);
 
-        var uri = UriComponentsBuilder.fromUriString("/users").queryParam("page", pageDtoIn.getPage())
-                .queryParam("pageSize", pageDtoIn.getPageSize()).toUriString();
+        var uri = UriComponentsBuilder.fromUriString("/jobs")
+                .queryParam("page", pageDtoIn.getPage())
+                .queryParam("pageSize", pageDtoIn.getPageSize())
+                .toUriString();
 
         System.out.println("ACCESS TOKEN: " + accessToken);
 
-        mockMvc.perform(MockMvcRequestBuilders.get(uri).header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken))
-                .andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
+        mockMvc.perform(MockMvcRequestBuilders.get(uri)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(result -> {
                     var response = objectMapper.readValue(result.getResponse().getContentAsString(),
-                            new TypeReference<ApiResponse<PageDtoOut<JobDtoOut>>>() {
-                            });
+                            new TypeReference<ApiResponse<PageDtoOut<JobDtoOut>>>() {});
                     Assertions.assertNotNull(response);
                     Assertions.assertNotNull(response.getData());
                     Assertions.assertNotNull(response.getData().getData());
@@ -103,6 +106,58 @@ public class JobControllerTest {
                     }
 
                     Assertions.assertEquals(expectedDataSize, response.getData().getData().size());
+                });
+    }
+
+    @Test
+    void get() throws Exception {
+        BigInteger id = BigInteger.valueOf(1);
+        String title = "Nhân Viên Bán Hàng Trực Tiếp - Direct Sales Representative";
+
+        String uri = UriComponentsBuilder.fromUriString("/jobs/{id}")
+                .buildAndExpand(id)
+                .toUriString();
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uri)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(result -> {
+                    var response = objectMapper.readValue(result.getResponse().getContentAsString(),
+                            new TypeReference<ApiResponse<JobDtoOut>>() {
+                            });
+                    Assertions.assertNotNull(response);
+                    Assertions.assertNotNull(response.getData());
+                    Assertions.assertEquals(id, response.getData().getId());
+                });
+    }
+
+    @Test
+    void add() throws Exception {
+        JobDtoIn jobDtoIn = new JobDtoIn();
+        jobDtoIn.setEmployerId(2L);
+        jobDtoIn.setTitle("Software Engineering");
+        jobDtoIn.setQuantity(5);
+        jobDtoIn.setDescription("Develop and maintain software applications.");
+        jobDtoIn.setFieldIds("-64-");
+        jobDtoIn.setProvinceIds("-1-");
+        jobDtoIn.setSalary(60000);
+        jobDtoIn.setExpiredAt(LocalDate.now().plusMonths(1));
+
+        var uri = UriComponentsBuilder.fromUriString("/jobs").toUriString();
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(jobDtoIn)))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(result -> {
+                    var response = objectMapper.readValue(result.getResponse().getContentAsString(),
+                            new TypeReference<ApiResponse<JobDtoOut>>() {
+                            });
+                    Assertions.assertNotNull(response);
+                    Assertions.assertNotNull(response.getData());
+                    Assertions.assertEquals(jobDtoIn.getTitle(), response.getData().getTitle());
                 });
     }
 }

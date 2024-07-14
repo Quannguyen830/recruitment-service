@@ -1,13 +1,13 @@
 package com.example.recruitment_service.ApiController;
 
 import com.example.recruitment_service.common.response.ApiResponse;
-import com.example.recruitment_service.dto.dtoIn.entity.EmployerDtoIn;
 import com.example.recruitment_service.dto.dtoIn.entity.LoginDtoIn;
 import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
-import com.example.recruitment_service.dto.dtoOut.EmployerDtoOut;
+import com.example.recruitment_service.dto.dtoIn.entity.ResumeDtoIn;
 import com.example.recruitment_service.dto.dtoOut.JobDtoOut;
 import com.example.recruitment_service.dto.dtoOut.LoginDtoOut;
 import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
+import com.example.recruitment_service.dto.dtoOut.ResumeDtoOut;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -26,9 +26,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigInteger;
 
-@SpringBootTest()
+@SpringBootTest
 @AutoConfigureMockMvc
-public class EmployerControllerTest {
+public class ResumeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -62,7 +62,7 @@ public class EmployerControllerTest {
         pageDtoIn.setPage(2);
         pageDtoIn.setPageSize(10);
 
-        var uri = UriComponentsBuilder.fromUriString("/employers")
+        var uri = UriComponentsBuilder.fromUriString("/resumes")
                 .queryParam("page", pageDtoIn.getPage())
                 .queryParam("pageSize", pageDtoIn.getPageSize())
                 .toUriString();
@@ -111,10 +111,9 @@ public class EmployerControllerTest {
 
     @Test
     void get() throws Exception {
-        BigInteger id = BigInteger.valueOf(2);
-        String name = "Quan123";
+        BigInteger id = BigInteger.valueOf(8514215);
 
-        String uri = UriComponentsBuilder.fromUriString("/employers")
+        String uri = UriComponentsBuilder.fromUriString("/resumes")
                 .queryParam("id", id)
                 .toUriString();
 
@@ -123,35 +122,35 @@ public class EmployerControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(result -> {
                     var response = objectMapper.readValue(result.getResponse().getContentAsString(),
-                            new TypeReference<ApiResponse<EmployerDtoOut>>() {
+                            new TypeReference<ApiResponse<ResumeDtoOut>>() {
                             });
                     Assertions.assertNotNull(response);
                     Assertions.assertNotNull(response.getData());
-                    Assertions.assertEquals(name, response.getData().getName());
+                    Assertions.assertEquals(id, response.getData().getId());
                 });
     }
 
-
+    @Test
     void add() throws Exception {
-        EmployerDtoIn employerDtoIn = new EmployerDtoIn();
-        employerDtoIn.setName("quan");
+        ResumeDtoIn resumeDtoIn = new ResumeDtoIn();
+        resumeDtoIn.setTitle("Resume 1");
 
-        var uri = UriComponentsBuilder.fromUriString("/employers")
+        var uri = UriComponentsBuilder.fromUriString("/resumes")
                 .toUriString();
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(employerDtoIn)))
+                        .content(objectMapper.writeValueAsBytes(resumeDtoIn)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(result -> {
                     var response = objectMapper.readValue(result.getResponse().getContentAsString(),
-                            new TypeReference<ApiResponse<EmployerDtoOut>>() {
+                            new TypeReference<ApiResponse<ResumeDtoOut>>() {
                             });
                     Assertions.assertNotNull(response);
                     Assertions.assertNotNull(response.getData());
-                    Assertions.assertEquals(employerDtoIn.getName(), response.getData().getName());
+                    Assertions.assertEquals(resumeDtoIn.getTitle(), response.getData().getTitle());
                 });
     }
 }

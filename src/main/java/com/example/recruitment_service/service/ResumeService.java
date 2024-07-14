@@ -9,9 +9,9 @@ import com.example.recruitment_service.dto.dtoOut.ResumeDtoOut;
 import java.math.BigInteger;
 
 public interface ResumeService {
-    ResumeDtoOut createResume(ResumeDtoIn resumeDtoIn);
-    void updateResume(BigInteger id, UpdatedResumeDtoIn updatedResumeDtoIn);
-    ResumeDtoOut findResumeById(BigInteger id);
-    PageDtoOut<ResumeDtoOut> findAllResume(PageDtoIn pageDtoIn);
-    void deleteResume(BigInteger id);
+    ResumeDtoOut add(ResumeDtoIn resumeDtoIn);
+    void update(BigInteger id, UpdatedResumeDtoIn updatedResumeDtoIn);
+    ResumeDtoOut get(BigInteger id);
+    PageDtoOut<ResumeDtoOut> list(PageDtoIn pageDtoIn);
+    void delete(BigInteger id);
 }

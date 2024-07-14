@@ -7,9 +7,9 @@ import com.example.recruitment_service.dto.dtoOut.EmployerDtoOut;
 import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
 
 public interface EmployerService {
-    EmployerDtoOut createEmployer(EmployerDtoIn employerDtoIn);
-    void updateEmployer(long id, UpdatedEmployerDtoIn employer);
-    EmployerDtoOut getEmployerById(Long id);
-    PageDtoOut<EmployerDtoOut> getAllEmployers(PageDtoIn pageDtoIn);
-    void deleteEmployer(Long id);
+    EmployerDtoOut add(EmployerDtoIn employerDtoIn);
+    void update(long id, UpdatedEmployerDtoIn employer);
+    EmployerDtoOut get(Long id);
+    PageDtoOut<EmployerDtoOut> list(PageDtoIn pageDtoIn);
+    void delete(Long id);
 }

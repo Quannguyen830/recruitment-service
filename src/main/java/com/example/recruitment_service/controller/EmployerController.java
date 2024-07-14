@@ -22,29 +22,29 @@ public class EmployerController {
 
     @PostMapping
     public ResponseEntity<?> addEmployer(@Valid @RequestBody EmployerDtoIn employer) {
-        return ResponseController.responseEntity(() -> employerService.createEmployer(employer), HttpStatus.CREATED);
+        return ResponseController.responseEntity(() -> employerService.add(employer), HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<?> getAllEmployers(@Valid PageDtoIn pageDtoIn) {
-        return ResponseController.responseEntity(() -> employerService.getAllEmployers(pageDtoIn));
+        return ResponseController.responseEntity(() -> employerService.list(pageDtoIn));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteEmployer(@PathVariable long id) {
-        employerService.deleteEmployer(id);
+        employerService.delete(id);
         return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getEmployerById(@PathVariable long id) {
         baseRedisService.set("employer",String.valueOf(id));
-        return ResponseController.responseEntity(() -> employerService.getEmployerById(id), HttpStatus.OK);
+        return ResponseController.responseEntity(() -> employerService.get(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEmployer(@PathVariable long id, @Valid @RequestBody UpdatedEmployerDtoIn employer) {
-        employerService.updateEmployer(id, employer);
+        employerService.update(id, employer);
         return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 
