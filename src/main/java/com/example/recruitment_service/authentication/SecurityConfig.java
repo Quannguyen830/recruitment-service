@@ -43,7 +43,8 @@ public class SecurityConfig {
                         .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/auth/login", "/employers/**").permitAll()
+                        .requestMatchers("/auth/login", "/v3/api-docs",
+                                "/swagger-ui/**", "/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(configurer -> {
                     configurer.authenticationEntryPoint(customAuthEntryPoint);
