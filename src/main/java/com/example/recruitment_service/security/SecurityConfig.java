@@ -1,5 +1,6 @@
-package com.example.recruitment_service.authentication;
+package com.example.recruitment_service.security;
 
+import com.example.recruitment_service.security.CustomAuthenticationEntryPoint;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -35,7 +36,7 @@ import java.security.interfaces.RSAPublicKey;
 @Log4j2
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final CustomAuthEntryPoint customAuthEntryPoint;
+    private final CustomAuthenticationEntryPoint customAuthEntryPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
