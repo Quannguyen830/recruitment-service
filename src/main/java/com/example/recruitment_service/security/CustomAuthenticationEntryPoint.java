@@ -1,4 +1,4 @@
-package com.example.recruitment_service.authentication;
+package com.example.recruitment_service.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,8 +13,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
-
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Override
