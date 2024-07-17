@@ -5,6 +5,7 @@ import com.example.recruitment_service.dto.dtoIn.entity.PageDtoIn;
 import com.example.recruitment_service.dto.dtoIn.updateEntity.UpdatedEmployerDtoIn;
 import com.example.recruitment_service.common.controller.ResponseController;
 import com.example.recruitment_service.dto.dtoOut.EmployerDtoOut;
+import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
 import com.example.recruitment_service.service.impl.BaseRedisServiceImpl;
 import com.example.recruitment_service.service.impl.EmployerServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,6 +65,12 @@ public class EmployerController {
         return ResponseController.responseEntity(() -> HttpStatus.NO_CONTENT);
     }
 
+    @Operation(summary = "List all employers",
+            description = "Retrieves the details of all employers.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Employer details",
+                            content = @Content(schema = @Schema(implementation = PageDtoOut.class))),
+            })
     @GetMapping
     public ResponseEntity<?> list(@Valid PageDtoIn pageDtoIn) {
         return ResponseController.responseEntity(() -> employerService.list(pageDtoIn));
