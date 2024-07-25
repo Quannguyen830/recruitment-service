@@ -32,8 +32,9 @@ public class EmployerServiceImpl implements EmployerService {
     private final EmployerRepository employerRepository;
 
     @Override
+    @CachePut(cacheNames = "employers", key = "#result.id")
     public EmployerDtoOut add(EmployerDtoIn employerDtoIn) {
-        if(employerRepository.findByEmail(employerDtoIn.getEmail()).isPresent()) {
+        if (employerRepository.findByEmail(employerDtoIn.getEmail()).isPresent()) {
             throw new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Email is already in use");
         }
         Employer newEmployer = EmployerDtoIn.from(employerDtoIn);
@@ -41,7 +42,7 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
-    @CachePut(value = "employers", key = "#id")
+    @CachePut(cacheNames = "employers", key = "#id")
     public void update(long id, UpdatedEmployerDtoIn updatedEmployer) {
         Employer employer = employerRepository.findById(id).orElseThrow(() ->
             new ApiException(ErrorCode.DATA_NOT_FOUND, HttpStatus.BAD_REQUEST, "Employer not found")
@@ -55,7 +56,7 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
-    @Cacheable(value = "employers", key = "#id")
+    @Cacheable(cacheNames = "employers", key = "#id")
     public EmployerDtoOut get(Long id) {
         Employer employer = employerRepository.findById(id).orElseThrow(() ->
             new ApiException(ErrorCode.DATA_NOT_FOUND, HttpStatus.BAD_REQUEST, "Employer not found")
@@ -65,7 +66,7 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
-    @Cacheable(value = "employers")
+    @Cacheable(cacheNames = "employers", key = "'page=' + #pageDtoIn.page + ',sort=id'")
     public PageDtoOut<EmployerDtoOut> list(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize()
                 , Sort.by("id").ascending());

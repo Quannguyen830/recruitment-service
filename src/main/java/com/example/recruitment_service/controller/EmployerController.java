@@ -86,7 +86,6 @@ public class EmployerController {
             })
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable long id) {
-        baseRedisService.set("employer",String.valueOf(id));
         return ResponseController.responseEntity(() -> employerService.get(id), HttpStatus.OK);
     }
 

@@ -29,18 +29,14 @@ public class Employer {
     @Column(name = "province")
     private Integer province;
 
-    private String province_name;
-
     @Column(name = "description")
     private String description;
 
-    @Builder.Default
     @Column(name = "created_at")
-    private LocalDate createdAt = LocalDate.now();
+    private LocalDate createdAt;
 
-    @Builder.Default
     @Column(name = "updated_at")
-    private LocalDate updatedAt = LocalDate.now();
+    private LocalDate updatedAt;
 
 }
 

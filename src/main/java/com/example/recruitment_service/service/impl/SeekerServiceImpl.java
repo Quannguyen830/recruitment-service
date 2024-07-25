@@ -35,6 +35,7 @@ public class SeekerServiceImpl implements SeekerService {
     private final JobProvinceRepository provinceRepository;
 
     @Override
+    @CachePut(cacheNames = "seekers", key = "#result.id")
     public SeekerDtoOut add(SeekerDtoIn seekerDtoIn) {
         Seeker seeker = SeekerDtoIn.from(seekerDtoIn);
         seekerRepository.save(seeker);
@@ -42,7 +43,7 @@ public class SeekerServiceImpl implements SeekerService {
     }
 
     @Override
-    @CachePut(value = "seekers", key = "#id")
+    @CachePut(cacheNames = "seekers", key = "#id")
     public void update(BigInteger id, UpdatedSeekerDtoIn updatedSeekerDtoIn) {
         Seeker seekerFound = seekerRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Seeker not found")
@@ -57,7 +58,7 @@ public class SeekerServiceImpl implements SeekerService {
     }
 
     @Override
-    @Cacheable(value = "seekers", key = "#id")
+    @Cacheable(cacheNames = "seekers", key = "#id")
     public SeekerDtoOut get(BigInteger id) {
         Seeker seekerFound = seekerRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Seeker not found")
@@ -67,7 +68,7 @@ public class SeekerServiceImpl implements SeekerService {
     }
 
     @Override
-    @Cacheable(value = "seekers")
+    @Cacheable(cacheNames = "seekers", key = "'page=' + #pageDtoIn.page + ',sort=id'")
     public PageDtoOut<SeekerDtoOut> list(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize(),
                 Sort.by("name").descending());
@@ -81,7 +82,7 @@ public class SeekerServiceImpl implements SeekerService {
     }
 
     @Override
-    @CacheEvict(value = "seekers", key = "#id")
+    @CacheEvict(cacheNames = "seekers", key = "#id")
     public void delete(BigInteger id) {
         Seeker seeker = seekerRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Seeker not found")

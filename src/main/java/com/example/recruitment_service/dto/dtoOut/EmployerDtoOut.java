@@ -22,6 +22,6 @@ public class EmployerDtoOut implements Serializable {
 
     public static EmployerDtoOut from(Employer employer) {
         return EmployerDtoOut.builder().id(employer.getId()).email(employer.getEmail()).name(employer.getName())
-                .provinceId(employer.getProvince()).provinceName(employer.getProvince_name()).description(employer.getDescription()).build();
+                .provinceId(employer.getProvince()).description(employer.getDescription()).build();
     }
 }

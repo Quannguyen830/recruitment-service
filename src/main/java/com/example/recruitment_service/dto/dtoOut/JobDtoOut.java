@@ -24,7 +24,7 @@ public class JobDtoOut implements Serializable {
     private Map<Integer, String> jobField;
     private Map<Integer, String> jobProvince;
     private Integer salary;
-    private LocalDate expiredAt;
+    private String expiredAt;
     private Long employerId;
     private String employerName;
 
@@ -33,7 +33,7 @@ public class JobDtoOut implements Serializable {
     ) {
         return JobDtoOut.builder().id(job.getId()).title(job.getTitle()).quantity(job.getQuantity())
                 .description(job.getDescription()).jobField(jobField).jobProvince(jobProvince)
-                .salary(job.getSalary()).expiredAt(job.getExpired_at()).employerId(job.getEmployerId())
+                .salary(job.getSalary()).expiredAt(job.getExpired_at().toString()).employerId(job.getEmployerId())
                 .employerName(employerName).build();
     }
 }

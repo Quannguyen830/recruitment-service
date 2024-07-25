@@ -38,6 +38,7 @@ public class JobServiceImpl implements JobService {
     private final JobFieldRepository fieldRepository;
 
     @Override
+    @CachePut(cacheNames = "jobs", key = "#result.id")
     public JobDtoOut add(JobDtoIn jobDtoIn) {
         Job job = JobDtoIn.from(jobDtoIn);
         jobRepository.save(job);
@@ -45,7 +46,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    @CachePut(value = "jobs", key = "#id")
+    @CachePut(cacheNames = "jobs", key = "#id")
     public void update(BigInteger id, UpdatedJobDtoIn updatedJobDtoIn) {
         Job job = jobRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Job not found")
@@ -64,7 +65,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    @Cacheable(value = "jobs", key = "#id")
+    @Cacheable(cacheNames = "jobs", key = "#id")
     public JobDtoOut get(BigInteger id) {
         Job job = jobRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Job not found")
@@ -73,7 +74,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    @Cacheable(value = "jobs")
+    @Cacheable(cacheNames = "jobs", key = "'page=' + #pageDtoIn.page + ',sort=id'")
     public PageDtoOut<JobDtoOut> list(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize());
         Page<Job> page = jobRepository.findAllJobsSorted(pageable);
@@ -82,7 +83,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    @CacheEvict(value = "jobs", key = "#id")
+    @CacheEvict(cacheNames = "jobs", key = "#id")
     public void delete(BigInteger id) {
         if(jobRepository.findById(id).isPresent()) {
             jobRepository.deleteById(id);

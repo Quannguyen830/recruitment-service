@@ -53,6 +53,7 @@ public class AdminServiceImpl implements AdminService {
                 .build();
     }
 
+    @Override
     public FilterByJobDtoOut findMatchingJobAndSeeker(BigInteger id) {
         Job job = jobRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Job not found")

@@ -38,6 +38,7 @@ public class ResumeServiceImpl implements ResumeService {
     private final JobProvinceRepository jobProvinceRepository;
 
     @Override
+    @CachePut(cacheNames = "resumes", key = "#result.id")
     public ResumeDtoOut add(ResumeDtoIn resumeDtoIn) {
         Resume resume = ResumeDtoIn.from(resumeDtoIn);
         resumeRepository.save(resume);
@@ -45,7 +46,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @CachePut(value = "resumes", key = "#id")
+    @CachePut(cacheNames = "resumes", key = "#id")
     public void update(BigInteger id, UpdatedResumeDtoIn updatedResumeDtoIn) {
         Resume resume = resumeRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Resume not found")
@@ -60,7 +61,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @Cacheable(value = "resumes", key = "#id")
+    @Cacheable(cacheNames = "resumes", key = "#id")
     public ResumeDtoOut get(BigInteger id) {
         Resume resume = resumeRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Resume not found")
@@ -69,7 +70,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @Cacheable(value = "resumes")
+    @Cacheable(cacheNames = "resumes", key = "'page=' + #pageDtoIn.page + ',sort=id'")
     public PageDtoOut<ResumeDtoOut> list(PageDtoIn pageDtoIn) {
         Pageable pageable = PageRequest.of(pageDtoIn.getPage()-1, pageDtoIn.getPageSize());
         Page<Resume> page = resumeRepository.findAllResumeSorted(pageable);
@@ -78,7 +79,7 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    @CacheEvict(value = "resumes", key = "#id")
+    @CacheEvict(cacheNames = "resumes", key = "#id")
     public void delete(BigInteger id) {
         Resume resume = resumeRepository.findById(id).orElseThrow(
                 () -> new ApiException(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST, "Resume not found")
