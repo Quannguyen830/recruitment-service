@@ -44,7 +44,8 @@ public class SecurityConfig {
                         .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/auth/login", "/v3/api-docs",
+                        .requestMatchers("/admin").hasAuthority("ADMIN")
+                        .requestMatchers("/auth/*", "/v3/api-docs",
                                 "/swagger-ui/**", "/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(configurer -> {
@@ -61,17 +62,6 @@ public class SecurityConfig {
                 });
 
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user = User.builder()
-                .username("quan")
-                .password(passwordEncoder.encode("password"))
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user);
     }
 
     @Bean

@@ -4,6 +4,10 @@ import com.example.recruitment_service.common.errorCode.ErrorCode;
 import com.example.recruitment_service.common.exception.ApiException;
 import com.example.recruitment_service.dto.dtoIn.entity.LoginDtoIn;
 import com.example.recruitment_service.dto.dtoOut.LoginDtoOut;
+import com.example.recruitment_service.model.user.Customer;
+import com.example.recruitment_service.model.user.Role;
+import com.example.recruitment_service.repository.CustomerRepository;
+import com.example.recruitment_service.security.CustomerDetail;
 import com.example.recruitment_service.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -23,18 +27,31 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
+    private final CustomerRepository customerRepository;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JwtEncoder jwtEncoder;
 
     @Override
-    public void register(LoginDtoIn loginDtoIn) {
-
+    public Customer register(LoginDtoIn loginDtoIn) {
+        Customer customer = new Customer();
+        if(customerRepository.findByUsername(loginDtoIn.getUsername()).isEmpty()) {
+            customer.setUsername(loginDtoIn.getUsername());
+            customer.setPassword(passwordEncoder.encode(loginDtoIn.getPassword()));
+            customer.setRole(new ArrayList<>());
+            customerRepository.save(customer);
+            System.out.println("Not found");
+        } else {
+            customer = customerRepository.findByUsername(loginDtoIn.getUsername()).get();
+            System.out.println("Found");
+        }
+        return customer;
     }
 
     @Override
