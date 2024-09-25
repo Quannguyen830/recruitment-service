@@ -8,7 +8,7 @@ import com.example.recruitment_service.dto.dtoOut.PageDtoOut;
 import com.example.recruitment_service.common.errorCode.ErrorCode;
 import com.example.recruitment_service.common.exception.ApiException;
 import com.example.recruitment_service.model.Employer;
-import com.example.recruitment_service.repository.EmployerRepository;
+import com.example.recruitment_service.repository.jpa.EmployerRepository;
 import com.example.recruitment_service.service.EmployerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -1,4 +1,4 @@
-package com.example.recruitment_service.repository;
+package com.example.recruitment_service.repository.jpa;
 
 import com.example.recruitment_service.model.Job;
 import org.springframework.data.domain.Page;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.List;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, BigInteger> {

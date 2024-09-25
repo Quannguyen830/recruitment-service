@@ -1,4 +1,4 @@
-package com.example.recruitment_service.repository;
+package com.example.recruitment_service.repository.jpa;
 
 import com.example.recruitment_service.model.Resume;
 import org.springframework.data.domain.Page;

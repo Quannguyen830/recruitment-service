@@ -1,4 +1,4 @@
-package com.example.recruitment_service.repository;
+package com.example.recruitment_service.repository.jpa;
 
 import com.example.recruitment_service.model.Seeker;
 import org.springframework.data.jpa.repository.JpaRepository;

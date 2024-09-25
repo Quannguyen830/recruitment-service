@@ -6,7 +6,7 @@ import com.example.recruitment_service.dto.dtoIn.filter.FilterByDayDtoIn;
 import com.example.recruitment_service.dto.dtoOut.FilterByDayDtoOut;
 import com.example.recruitment_service.dto.dtoOut.FilterByJobDtoOut;
 import com.example.recruitment_service.model.*;
-import com.example.recruitment_service.repository.*;
+import com.example.recruitment_service.repository.jpa.*;
 import com.example.recruitment_service.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
